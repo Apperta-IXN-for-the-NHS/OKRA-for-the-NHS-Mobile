@@ -1,0 +1,2 @@
+rootProject.name='EMIS Mobile'
+include ':app'
