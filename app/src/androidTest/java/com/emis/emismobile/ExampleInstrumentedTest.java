@@ -23,5 +23,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.emis.emismobile", appContext.getPackageName());
-    }
+    }   
 }
