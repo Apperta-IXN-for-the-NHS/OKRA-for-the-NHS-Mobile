@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EMIS Mobile</string>
+    <string name="buttonOpenKnowledge">Knowledge</string>
+    <string name="buttonOpenContact">Contact Us</string>
 </resources>
