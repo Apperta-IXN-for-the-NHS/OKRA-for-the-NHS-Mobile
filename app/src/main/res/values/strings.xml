@@ -2,4 +2,5 @@
     <string name="app_name">EMIS Mobile</string>
     <string name="buttonOpenKnowledge">Knowledge</string>
     <string name="buttonOpenContact">Contact Us</string>
+    <string name="supportContactNumber">tel:07725444555</string>
 </resources>

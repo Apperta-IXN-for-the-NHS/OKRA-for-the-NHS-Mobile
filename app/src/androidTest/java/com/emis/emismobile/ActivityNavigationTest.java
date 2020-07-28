@@ -1,13 +1,11 @@
 package com.emis.emismobile;
 
 import android.content.Context;
+import android.content.Intent;
 
-import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-
-import com.emis.emismobile.knowledge.KnowledgeActivity;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,9 +15,10 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -53,5 +52,13 @@ public class ActivityNavigationTest {
         onView(withId(R.id.open_contact_us_button)).perform(click());
 
         intended(hasComponent(hasShortClassName(".contact.ContactUsActivity")));
+    }
+
+    @Test
+    public void whenClickOnCallSendDialAction() {
+        onView(withId(R.id.open_contact_us_button)).perform(click());
+        onView(withId(R.id.floatingPhoneButton)).perform(click());
+
+        intended(hasAction(Intent.ACTION_DIAL));
     }
 }
