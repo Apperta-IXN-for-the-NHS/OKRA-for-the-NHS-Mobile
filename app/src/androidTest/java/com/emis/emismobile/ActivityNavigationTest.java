@@ -1,23 +1,19 @@
 package com.emis.emismobile;
 
 import android.content.Context;
-import android.content.Intent;
+import android.view.Menu;
 
-import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.ActivityTestRule;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.matcher.ComponentNameMatchers.hasShortClassName;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -29,8 +25,16 @@ import static org.junit.Assert.assertEquals;
 public class ActivityNavigationTest {
 
     @Rule
-    public IntentsTestRule<MainActivity> intentsRule =
-            new IntentsTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainActivity> activityTestRule = new ActivityTestRule<>(MainActivity.class);
+
+
+    private BottomNavigationView navigationView;
+
+    @Before
+    public void setupNavigation() {
+        MainActivity activity = activityTestRule.getActivity();
+        navigationView = activity.findViewById(R.id.nav_view);
+    }
 
     @Test
     public void useAppContext() {
@@ -41,24 +45,13 @@ public class ActivityNavigationTest {
     }
 
     @Test
-    public void whenClickOnKnowledgeOpenCorrespondingActivity() {
-        onView(withId(R.id.open_knowledge_button)).perform(click());
+    public void navigationMenuHasCorrectOptions() {
+        Menu menu = navigationView.getMenu();
 
-        intended(hasComponent(hasShortClassName(".knowledge.KnowledgeActivity")));
+        assertEquals(3, menu.size());
+        assertEquals(R.id.navigation_knowledge, menu.getItem(0).getItemId());
+        assertEquals(R.id.navigation_cases, menu.getItem(1).getItemId());
+        assertEquals(R.id.navigation_contact_us, menu.getItem(2).getItemId());
     }
 
-    @Test
-    public void whenClickOnContactUsOpenCorrespondingActivity() {
-        onView(withId(R.id.open_contact_us_button)).perform(click());
-
-        intended(hasComponent(hasShortClassName(".contact.ContactUsActivity")));
-    }
-
-    @Test
-    public void whenClickOnCallSendDialAction() {
-        onView(withId(R.id.open_contact_us_button)).perform(click());
-        onView(withId(R.id.floatingPhoneButton)).perform(click());
-
-        intended(hasAction(Intent.ACTION_DIAL));
-    }
 }
