@@ -4,4 +4,5 @@
     <string name="title_cases">Cases</string>
     <string name="title_knowledge">Knowledge</string>
     <string name="title_contact_us">Contact us</string>
+    <string name="api_base_url">http://162.62.53.126/</string>
 </resources>
