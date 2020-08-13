@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -16,6 +17,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        hideTopActionBar();
+
+        configureBottomNavigationBar();
+    }
+
+    private void configureBottomNavigationBar() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -28,4 +36,11 @@ public class MainActivity extends AppCompatActivity {
         navView.setSelectedItemId(R.id.navigation_knowledge);
     }
 
+    private void hideTopActionBar() {
+        ActionBar topBar = getSupportActionBar();
+
+        if (topBar != null) {
+            topBar.hide();
+        }
+    }
 }
