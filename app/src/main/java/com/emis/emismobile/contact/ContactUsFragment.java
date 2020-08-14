@@ -31,7 +31,7 @@ public class ContactUsFragment extends Fragment {
     }
 
     private void setupPhoneOnClickListener(View view) {
-        Button phoneButton = view.findViewById(R.id.phone_button);
+        Button phoneButton = view.findViewById(R.id.open_call_btn);
 
         phoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +45,7 @@ public class ContactUsFragment extends Fragment {
     }
 
     private void setupChatOnClickListener(View view) {
-        Button chatButton = view.findViewById(R.id.chat_button);
+        Button chatButton = view.findViewById(R.id.open_chat_btn);
         chatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
