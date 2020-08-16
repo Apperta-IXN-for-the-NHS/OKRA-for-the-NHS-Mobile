@@ -4,65 +4,71 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.emis.emismobile.Article;
-import com.emis.emismobile.EmisNowArticleServiceApi;
 import com.emis.emismobile.R;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class KnowledgeFragment extends Fragment {
 
-    private KnowledgeViewModel knowledgeViewModel;
-    private RecyclerView rvKnowledge;
+    private RecyclerView recyclerView;
+    private List<Article> articles = new ArrayList<>();
+    private KnowledgeAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        knowledgeViewModel = ViewModelProviders.of(this).get(KnowledgeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_knowledge, container, false);
-        rvKnowledge = root.findViewById(R.id.rvKnowledge);
+        recyclerView = root.findViewById(R.id.rvKnowledge);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.api_base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        setUpRecyclerView();
+        setUpDynamicFetchOnScroll();
 
-        EmisNowArticleServiceApi emisNowArticleServiceApi = retrofit.create(EmisNowArticleServiceApi.class);
-        Call<List<Article>> call = emisNowArticleServiceApi.getArticles();
-        enqueueCall(call);
+        fetchAndDisplayArticles(10, 0);
+
         return root;
     }
 
-    public void enqueueCall(Call<List<Article>> call){
-        call.enqueue(new Callback<List<Article>>() {
-            @Override
-            public void onResponse(Call<List<Article>> call, Response<List<Article>> response) {
-                if(!response.isSuccessful()){
-                    System.out.println("Code: " + response.code());
-                    return;
-                }
+    private void setUpRecyclerView() {
+        adapter = new KnowledgeAdapter(articles);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+    }
 
-                List<Article> articles = response.body();
-                KnowledgeAdapter adapter = new KnowledgeAdapter(articles);
-                rvKnowledge.setAdapter(adapter);
-                rvKnowledge.setLayoutManager(new LinearLayoutManager(rvKnowledge.getContext()));
+    private void setUpDynamicFetchOnScroll() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
-            public void onFailure(Call<List<Article>> call, Throwable t) {
-                System.out.println(t.getMessage());
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(1)) {
+                    loadMoreArticles(5);
+                }
             }
         });
+    }
+
+    private void fetchAndDisplayArticles(int limit, int start) {
+        KnowledgeViewModel viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
+        viewModel.getArticles(limit, start).observe(getViewLifecycleOwner(), this::updateArticleList);
+    }
+
+    private void updateArticleList(List<Article> newArticles) {
+        articles.addAll(newArticles);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void loadMoreArticles(int limit) {
+        fetchAndDisplayArticles(limit, articles.size());
     }
 }

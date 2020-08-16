@@ -1,9 +1,9 @@
 package com.emis.emismobile.contact;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.webkit.WebView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.emis.emismobile.R;
 

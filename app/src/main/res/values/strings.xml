@@ -4,5 +4,4 @@
     <string name="title_cases">Support Cases</string>
     <string name="title_knowledge">Knowledge Base</string>
     <string name="title_contact_us">Contact us</string>
-    <string name="api_base_url">http://162.62.53.126/</string>
 </resources>

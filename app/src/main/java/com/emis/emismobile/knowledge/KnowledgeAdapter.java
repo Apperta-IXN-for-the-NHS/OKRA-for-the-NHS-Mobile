@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.emis.emismobile.Article;
 import com.emis.emismobile.R;
 
 import java.util.List;
 
-public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.ViewHolder>{
+public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.ViewHolder> {
 
     private List<Article> mArticles;
 
@@ -59,7 +58,7 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.View
             titleTextView = (TextView) itemView.findViewById(R.id.article_title);
             authorTextView = (TextView) itemView.findViewById(R.id.article_author);
 
-            itemView.setOnClickListener(new View.OnClickListener(){
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     itemOnClick();
@@ -67,10 +66,10 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.View
             });
         }
 
-        public void itemOnClick(){
+        public void itemOnClick() {
             int pos = getAdapterPosition();
 
-            if(pos != RecyclerView.NO_POSITION){
+            if (pos != RecyclerView.NO_POSITION) {
                 Article clickedArticle = mArticles.get(pos);
                 Intent intent = new Intent(itemView.getContext(), DisplayArticleActivity.class);
                 String articleId = clickedArticle.getId();
