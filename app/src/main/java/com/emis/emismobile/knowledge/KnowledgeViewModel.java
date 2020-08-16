@@ -13,8 +13,9 @@ public class KnowledgeViewModel extends ViewModel {
 
     public LiveData<Article> getArticleById(String articleId) {
         if (newArticleSelected(articleId)) {
-            selectedArticle = articleRepository.getArticleById(articleId);
+            selectedArticle = articleRepository.fetchArticleById(articleId);
         }
+
         return selectedArticle;
     }
 
@@ -24,14 +25,11 @@ public class KnowledgeViewModel extends ViewModel {
                 || !selectedArticle.getValue().getId().equals(articleId);
     }
 
-    public LiveData<List<Article>> getAllArticles() {
+    public LiveData<List<Article>> getArticles(int limit, int start) {
         if (allArticles == null) {
-            fetchAllArticles();
+            allArticles = articleRepository.fetchArticles(limit, start);
         }
-        return allArticles;
-    }
 
-    private void fetchAllArticles() {
-        allArticles = articleRepository.getArticles();
+        return allArticles;
     }
 }

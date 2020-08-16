@@ -3,6 +3,7 @@ package com.emis.emismobile.knowledge;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class ArticleRepository {
         return instance;
     }
 
-    public LiveData<Article> getArticleById(String id) {
+    public LiveData<Article> fetchArticleById(String id) {
         final MutableLiveData<Article> article = new MutableLiveData<>();
 
         webService.getArticle(id).enqueue(new Callback<Article>() {
@@ -65,10 +66,10 @@ public class ArticleRepository {
         return article;
     }
 
-    public LiveData<List<Article>> getArticles() {
+    public LiveData<List<Article>> fetchArticles(int limit, int start) {
         final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
 
-        webService.getArticles().enqueue(new Callback<List<Article>>() {
+        webService.getArticles(limit, start).enqueue(new Callback<List<Article>>() {
             @Override
             public void onResponse(@NonNull Call<List<Article>> call,
                                    @NonNull Response<List<Article>> response) {
