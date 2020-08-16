@@ -1,4 +1,4 @@
-package com.emis.emismobile;
+package com.emis.emismobile.knowledge;
 
 import com.google.gson.annotations.SerializedName;
 

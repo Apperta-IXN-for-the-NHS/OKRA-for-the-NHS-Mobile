@@ -1,16 +1,16 @@
-package com.emis.emismobile;
+package com.emis.emismobile.knowledge;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-import java.util.List;
+public interface EmisNowArticleApiService {
 
-public interface EmisNowArticleServiceApi {
-
-    @GET("articles")
+    @GET("/articles")
     Call<List<Article>> getArticles();
 
-    @GET("articles/{id}")
+    @GET("/articles/{id}")
     Call<Article> getArticle(@Path("id") String id);
 }

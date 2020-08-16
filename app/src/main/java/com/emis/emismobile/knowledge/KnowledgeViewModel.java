@@ -1,19 +1,37 @@
 package com.emis.emismobile.knowledge;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.List;
 
 public class KnowledgeViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private final ArticleRepository articleRepository = ArticleRepository.getInstance();
+    private LiveData<Article> selectedArticle;
+    private LiveData<List<Article>> allArticles;
 
-    public KnowledgeViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is the knowledge fragment");
+    public LiveData<Article> getArticleById(String articleId) {
+        if (newArticleSelected(articleId)) {
+            selectedArticle = articleRepository.getArticleById(articleId);
+        }
+        return selectedArticle;
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    private boolean newArticleSelected(String articleId) {
+        return selectedArticle == null
+                || selectedArticle.getValue() == null
+                || !selectedArticle.getValue().getId().equals(articleId);
+    }
+
+    public LiveData<List<Article>> getAllArticles() {
+        if (allArticles == null) {
+            fetchAllArticles();
+        }
+        return allArticles;
+    }
+
+    private void fetchAllArticles() {
+        allArticles = articleRepository.getArticles();
     }
 }
