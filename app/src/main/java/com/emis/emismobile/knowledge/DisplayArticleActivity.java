@@ -47,4 +47,10 @@ public class DisplayArticleActivity extends AppCompatActivity {
             bodyTextView.setText("This article is empty.");
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
