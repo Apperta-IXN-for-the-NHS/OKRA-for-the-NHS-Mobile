@@ -26,10 +26,6 @@ public class KnowledgeViewModel extends ViewModel {
     }
 
     public LiveData<List<Article>> getArticles(int limit, int start) {
-        if (allArticles == null) {
-            allArticles = articleRepository.fetchArticles(limit, start);
-        }
-
-        return allArticles;
+        return articleRepository.fetchArticles(limit, start);
     }
 }
