@@ -6,33 +6,40 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
 import com.google.android.material.card.MaterialCardView;
 
 public class ContactUsFragment extends Fragment {
 
-    private ContactUsViewModel contactUsViewModel;
+    private static final float BUTTON_ELEVATION = 12;
+    private MaterialCardView chatButton, phoneButton, contactDetails;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        contactUsViewModel = new ViewModelProvider(this).get(ContactUsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
 
-        setupChatOnClickListener(view);
-        setupPhoneOnClickListener(view);
+        contactDetails = view.findViewById(R.id.contactDetailsCard);
+        chatButton = view.findViewById(R.id.chatButton);
+        phoneButton = view.findViewById(R.id.phoneButton);
+
+        setupContactDetailsCard();
+        setupChatButton();
+        setupPhoneButton();
 
         return view;
     }
 
-    private void setupPhoneOnClickListener(View view) {
-        MaterialCardView phoneButton = view.findViewById(R.id.callCard);
+    private void setupContactDetailsCard() {
+        contactDetails.setCardElevation(0);
+    }
+
+    private void setupPhoneButton() {
+        phoneButton.setCardElevation(BUTTON_ELEVATION);
 
         phoneButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_DIAL);
@@ -42,8 +49,8 @@ public class ContactUsFragment extends Fragment {
         });
     }
 
-    private void setupChatOnClickListener(View view) {
-        MaterialCardView chatButton = view.findViewById(R.id.chatCard);
+    private void setupChatButton() {
+        chatButton.setCardElevation(BUTTON_ELEVATION);
 
         chatButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), ChatActivity.class);
