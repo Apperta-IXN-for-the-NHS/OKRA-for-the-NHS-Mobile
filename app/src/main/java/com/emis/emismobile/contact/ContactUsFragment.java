@@ -10,9 +10,10 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
+import com.google.android.material.card.MaterialCardView;
 
 public class ContactUsFragment extends Fragment {
 
@@ -21,7 +22,7 @@ public class ContactUsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        contactUsViewModel = ViewModelProviders.of(this).get(ContactUsViewModel.class);
+        contactUsViewModel = new ViewModelProvider(this).get(ContactUsViewModel.class);
         View view = inflater.inflate(R.layout.fragment_contact_us, container, false);
 
         setupChatOnClickListener(view);
@@ -31,27 +32,22 @@ public class ContactUsFragment extends Fragment {
     }
 
     private void setupPhoneOnClickListener(View view) {
-        Button phoneButton = view.findViewById(R.id.open_call_btn);
+        MaterialCardView phoneButton = view.findViewById(R.id.callCard);
 
-        phoneButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                String supportPhoneNumber = getString(R.string.supportContactNumber);
-                intent.setData(Uri.parse(supportPhoneNumber));
-                startActivity(intent);
-            }
+        phoneButton.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            String supportPhoneNumber = getString(R.string.supportContactNumber);
+            intent.setData(Uri.parse(supportPhoneNumber));
+            startActivity(intent);
         });
     }
 
     private void setupChatOnClickListener(View view) {
-        Button chatButton = view.findViewById(R.id.open_chat_btn);
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                startActivity(intent);
-            }
+        MaterialCardView chatButton = view.findViewById(R.id.chatCard);
+
+        chatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            startActivity(intent);
         });
     }
 
