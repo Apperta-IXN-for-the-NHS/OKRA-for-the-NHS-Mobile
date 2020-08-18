@@ -10,10 +10,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Card views in knowledge base
 
-## [0.8.1] - 2020-08-17
+## [0.9.1] - 2020-08-17
+
+### Fixed
+- Bug where new articles were not being displayed when scrolling
+
+## [0.9.0] - 2020-08-17
 
 ### Added
-- Fixed the back button in the DisplayArticle page to keep the same position of the list
+- Styled the Contact Us tab
+- Remove the top bar
+
+## [0.8.1] - 2020-08-17
+
+### Fixed
+- Back button in the DisplayArticle page to keep the same position of the list
 
 ## [0.8.0] - 2020-08-16
 
