@@ -71,18 +71,12 @@
             android:layout_alignParentTop="false"
             android:layout_weight="0.5"
             android:textColor="@android:color/black"
+            android:layout_marginRight="5dp"
             app:icon="@drawable/ic_thumb_up_border_24px"
             app:iconGravity="end"
             app:iconTint="@android:color/black"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             />
-
-        <TextView
-            android:id="@+id/centerPoint"
-            android:text=""
-            android:layout_width="5dp"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true" />
 
         <Button
             android:id="@+id/dislikeButton"
@@ -91,6 +85,7 @@
             android:layout_weight="0.5"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
+            android:layout_marginLeft="5dp"
             app:icon="@drawable/ic_thumb_down_border_24px"
             app:iconGravity="end"
             app:iconTint="@android:color/black"
