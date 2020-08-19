@@ -2,11 +2,16 @@ package com.emis.emismobile.knowledge;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Article {
     private String id;
     private String author;
     private String title;
     private String body;
+    private List<Article> related = new ArrayList<>();
+
 
     @SerializedName("created")
     private String date;
@@ -50,6 +55,14 @@ public class Article {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public List<Article> getRelated() {
+        return related;
+    }
+
+    public void setRelated(List<Article> related) {
+        this.related = related;
     }
 }
 

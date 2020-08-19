@@ -1,9 +1,13 @@
 package com.emis.emismobile.knowledge;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -19,6 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emis.emismobile.R;
+import com.google.android.material.card.MaterialCardView;
+
+import java.util.List;
 
 public class DisplayArticleActivity extends AppCompatActivity {
     private TextView bodyTextView;
@@ -26,6 +33,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
     private TextView dateTextView;
     private TextView titleTextView;
     private LinearLayout buttonsLayout;
+    private LinearLayout articleLayout;
     private ScrollView scrollView;
     private Button likeButton;
 
@@ -33,6 +41,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_article);
+
         bodyTextView = this.findViewById(R.id.article_body);
         authorTextView = this.findViewById(R.id.article_author);
         dateTextView = this.findViewById(R.id.article_date);
@@ -40,12 +49,12 @@ public class DisplayArticleActivity extends AppCompatActivity {
         likeButton = this.findViewById(R.id.likeButton);
         buttonsLayout = this.findViewById(R.id.buttons_layout);
         scrollView = this.findViewById(R.id.article_scrollview);
+        articleLayout = this.findViewById(R.id.article_linearlayout);
 
         KnowledgeViewModel viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
         setUpScroll();
         Intent intent = getIntent();
         String articleId = intent.getStringExtra("article_id");
-
         viewModel.getArticleById(articleId).observe(this, this::displaySelectedArticle);
     }
 
@@ -61,8 +70,42 @@ public class DisplayArticleActivity extends AppCompatActivity {
             dateTextView.setText(article.getDate());
             titleTextView.setText(article.getTitle());
             setTitle("Article");
+            listRelatedArticles(article);
         } else {
             bodyTextView.setText("This article is empty.");
+        }
+    }
+
+    public void listRelatedArticles(Article article){
+        List<Article> relatedArticles = article.getRelated();
+        if(!relatedArticles.isEmpty()){
+            TextView relatedLabel = new TextView(this.getBaseContext());
+            relatedLabel.setText("Related Articles");
+            relatedLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            relatedLabel.setTextColor(Color.parseColor("black"));
+            articleLayout.addView(relatedLabel);
+        }
+
+        for (Article relatedArticle:relatedArticles) {
+            Context context = this.getBaseContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View knowledgeView = inflater.inflate(R.layout.item_knowledge, articleLayout, false);
+            knowledgeView.setClickable(true);
+            knowledgeView.setTag(relatedArticle.getId());
+
+            TextView articleTitleTV = knowledgeView.findViewById(R.id.article_title);
+            articleTitleTV.setText(relatedArticle.getTitle());
+            TextView articleDateTV = knowledgeView.findViewById(R.id.article_date);
+            articleDateTV.setText(relatedArticle.getDate());
+
+            knowledgeView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    openRelatedArticle(knowledgeView);
+                }
+            });
+
+            articleLayout.addView(knowledgeView);
         }
     }
 
@@ -70,6 +113,14 @@ public class DisplayArticleActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void openRelatedArticle(View knowledgeView){
+        Intent intent = new Intent(articleLayout.getContext(), DisplayArticleActivity.class);
+        String articleId = knowledgeView.getTag().toString();
+        System.out.println(articleId);
+        intent.putExtra("article_id", articleId);
+        articleLayout.getContext().startActivity(intent);
     }
 
     private void setUpScroll() {
@@ -81,11 +132,9 @@ public class DisplayArticleActivity extends AppCompatActivity {
                 if (scrollView.getScrollY() > y) {
                     //scroll down
                     buttonsLayout.setVisibility(View.GONE);
-                    System.out.println("down");
                 } else {
                     //scroll up
                     buttonsLayout.setVisibility(View.VISIBLE);
-                    System.out.println("up");
                 }
                 y = scrollView.getScrollY();
             }
