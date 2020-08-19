@@ -129,12 +129,19 @@ public class DisplayArticleActivity extends AppCompatActivity {
 
             @Override
             public void onScrollChanged() {
+                double diff = scrollView.getScrollY() - y;
+                diff = Math.abs(diff);
+
                 if (scrollView.getScrollY() > y) {
                     //scroll down
-                    buttonsLayout.setVisibility(View.GONE);
-                } else {
+                    if(diff > 20){
+                        buttonsLayout.setVisibility(View.GONE);
+                    }
+                } else if(scrollView.getScrollY() < y){
                     //scroll up
-                    buttonsLayout.setVisibility(View.VISIBLE);
+                    if(diff > 20){
+                        buttonsLayout.setVisibility(View.VISIBLE);
+                    }
                 }
                 y = scrollView.getScrollY();
             }

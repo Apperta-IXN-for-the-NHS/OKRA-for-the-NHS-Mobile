@@ -51,9 +51,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
-
-                />
+                android:textSize="18sp" />
         </android.widget.LinearLayout>
     </ScrollView>
     <LinearLayout
