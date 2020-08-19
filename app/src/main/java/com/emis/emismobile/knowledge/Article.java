@@ -49,8 +49,9 @@ public class Article {
     }
 
     public String getDate() {
-        String[] parts = date.split("-");
-        return parts[2]+"/"+parts[1]+"/"+parts[0];
+//        String[] parts = date.split("-");
+//        return parts[2]+"/"+parts[1]+"/"+parts[0];
+        return date;
     }
 
     public void setDate(String date) {
