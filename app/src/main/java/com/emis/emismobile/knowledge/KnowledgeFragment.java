@@ -91,6 +91,7 @@ public class KnowledgeFragment extends Fragment {
                 if (!recyclerView.canScrollVertically(1)) {
                     String query = getSearchBarText();
                     loadMoreArticles(query, 5);
+
                 }
                 return false;
             }
