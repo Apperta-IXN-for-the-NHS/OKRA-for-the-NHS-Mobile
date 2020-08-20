@@ -16,13 +16,19 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
+import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
+import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 
 import java.util.List;
 
 public class DisplayArticleActivity extends AppCompatActivity {
+    private String displayedArticleId;
+
     private TextView bodyTextView;
     private TextView authorTextView;
     private TextView dateTextView;
@@ -30,27 +36,108 @@ public class DisplayArticleActivity extends AppCompatActivity {
     private LinearLayout buttonsLayout;
     private LinearLayout articleLayout;
     private ScrollView scrollView;
-    private Button likeButton;
+    private Button upvoteButton;
+    private Button downvoteButton;
+
+    private KnowledgeViewModel viewModel;
+
+    private ArticleVoteService voteService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_article);
+        viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
+        voteService = new ArticleVoteService(this);
 
+        Intent intent = getIntent();
+        displayedArticleId = intent.getStringExtra("article_id");
+
+        setContentView(R.layout.activity_display_article);
+        setupViewComponents();
+        setupScroll();
+        setupVoteButtons();
+
+        fetchSelectedArticle();
+    }
+
+    private void setupViewComponents() {
         bodyTextView = this.findViewById(R.id.article_body);
         authorTextView = this.findViewById(R.id.article_author);
         dateTextView = this.findViewById(R.id.article_date);
         titleTextView = this.findViewById(R.id.article_title);
-        likeButton = this.findViewById(R.id.likeButton);
+        upvoteButton = this.findViewById(R.id.upvote_button);
+        downvoteButton = this.findViewById(R.id.downvote_button);
         buttonsLayout = this.findViewById(R.id.buttons_layout);
         scrollView = this.findViewById(R.id.article_scrollview);
         articleLayout = this.findViewById(R.id.article_linearlayout);
+    }
 
-        KnowledgeViewModel viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
-        setUpScroll();
-        Intent intent = getIntent();
-        String articleId = intent.getStringExtra("article_id");
-        viewModel.getArticleById(articleId).observe(this, this::displaySelectedArticle);
+    private void setupScroll() {
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            float y = 0;
+
+            @Override
+            public void onScrollChanged() {
+                double diff = scrollView.getScrollY() - y;
+                diff = Math.abs(diff);
+
+                if (scrollView.getScrollY() > y) {
+                    //scroll down
+                    if (diff > 20) {
+                        buttonsLayout.setVisibility(View.GONE);
+                    }
+                } else if (scrollView.getScrollY() < y) {
+                    //scroll up
+                    if (diff > 20) {
+                        buttonsLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+                y = scrollView.getScrollY();
+            }
+        });
+    }
+
+    private void setupVoteButtons() {
+        VoteType voteType = voteService.getVote(displayedArticleId);
+        setButtonColorsAndText(voteType);
+
+        upvoteButton.setOnClickListener(v -> {
+            setButtonColorsAndText(VoteType.UPVOTE);
+            voteService.upvote(displayedArticleId);
+        });
+
+        downvoteButton.setOnClickListener(v -> {
+            setButtonColorsAndText(VoteType.DOWNVOTE);
+            voteService.downvote(displayedArticleId);
+        });
+    }
+
+    private void setButtonColorsAndText(VoteType voteType) {
+        int defaultColor = android.R.color.white;
+
+        if (VoteType.UPVOTE.equals(voteType)) {
+            setButtonColor(upvoteButton, R.color.upvoteGreen);
+            setButtonText(upvoteButton, "Liked");
+            setButtonColor(downvoteButton, defaultColor);
+            setButtonText(downvoteButton, "Dislike");
+        } else if (VoteType.DOWNVOTE.equals(voteType)) {
+            setButtonColor(downvoteButton, R.color.downvoteRed);
+            setButtonText(downvoteButton, "Disliked");
+            setButtonColor(upvoteButton, defaultColor);
+            setButtonText(upvoteButton, "Like");
+        }
+    }
+
+    private void setButtonColor(Button button, int color) {
+        ViewCompat.setBackgroundTintList(button, ContextCompat.getColorStateList(this, color));
+    }
+
+    private void setButtonText(Button button, String text) {
+        button.setText(text);
+    }
+
+    private void fetchSelectedArticle() {
+        viewModel.getArticleById(displayedArticleId).observe(this, this::displaySelectedArticle);
     }
 
     private void displaySelectedArticle(Article article) {
@@ -71,17 +158,17 @@ public class DisplayArticleActivity extends AppCompatActivity {
         }
     }
 
-    public void listRelatedArticles(Article article){
+    private void listRelatedArticles(Article article) {
         List<Article> relatedArticles = article.getRelated();
-        if(!relatedArticles.isEmpty()){
+        if (!relatedArticles.isEmpty()) {
             TextView relatedLabel = new TextView(this.getBaseContext());
             relatedLabel.setText("Related Articles");
-            relatedLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
+            relatedLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             relatedLabel.setTextColor(Color.parseColor("black"));
             articleLayout.addView(relatedLabel);
         }
 
-        for (Article relatedArticle:relatedArticles) {
+        for (Article relatedArticle : relatedArticles) {
             Context context = this.getBaseContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -94,23 +181,13 @@ public class DisplayArticleActivity extends AppCompatActivity {
             TextView articleDateTV = knowledgeView.findViewById(R.id.article_date);
             articleDateTV.setText(relatedArticle.getDate());
 
-            knowledgeView.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    openRelatedArticle(knowledgeView);
-                }
-            });
+            knowledgeView.setOnClickListener(v -> openRelatedArticle(knowledgeView));
 
             articleLayout.addView(knowledgeView);
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    public void openRelatedArticle(View knowledgeView){
+    private void openRelatedArticle(View knowledgeView) {
         Intent intent = new Intent(articleLayout.getContext(), DisplayArticleActivity.class);
         String articleId = knowledgeView.getTag().toString();
         System.out.println(articleId);
@@ -118,28 +195,9 @@ public class DisplayArticleActivity extends AppCompatActivity {
         articleLayout.getContext().startActivity(intent);
     }
 
-    private void setUpScroll() {
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            float y = 0;
-
-            @Override
-            public void onScrollChanged() {
-                double diff = scrollView.getScrollY() - y;
-                diff = Math.abs(diff);
-
-                if (scrollView.getScrollY() > y) {
-                    //scroll down
-                    if(diff > 20){
-                        buttonsLayout.setVisibility(View.GONE);
-                    }
-                } else if(scrollView.getScrollY() < y){
-                    //scroll up
-                    if(diff > 20){
-                        buttonsLayout.setVisibility(View.VISIBLE);
-                    }
-                }
-                y = scrollView.getScrollY();
-            }
-        });
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
