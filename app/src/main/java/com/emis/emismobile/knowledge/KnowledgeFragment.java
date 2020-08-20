@@ -31,6 +31,7 @@ public class KnowledgeFragment extends Fragment {
     private TextInputLayout searchBar;
     private Button searchButton;
     private LinearLayout linearLayout;
+    private LinearLayout searchLayout;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_knowledge, container, false);
@@ -38,6 +39,7 @@ public class KnowledgeFragment extends Fragment {
         searchBar = root.findViewById(R.id.search_bar);
         searchButton = root.findViewById(R.id.search_button);
         linearLayout = root.findViewById(R.id.linear_layout);
+        searchLayout = root.findViewById(R.id.search_layout);
 
         setUpRecyclerView();
         setUpDynamicFetchOnScroll();
@@ -94,22 +96,35 @@ public class KnowledgeFragment extends Fragment {
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            float y = 0;
 
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (!recyclerView.canScrollVertically(1)) {
-//                    String query = getSearchBarText();
-//                    loadMoreArticles(query, 5);
-//                }
-//            }
-//        });
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                double diff = recyclerView.getScrollY() - dy;
+                diff = Math.abs(diff);
+                System.out.println(diff);
+
+                if (recyclerView.getScrollY() > dy) {
+                    //scroll up
+                    if(diff > 100){
+                        searchLayout.setVisibility(View.VISIBLE);
+                    }
+                } else if(recyclerView.getScrollY() < dy){
+                    //scroll down
+                    if(diff > 100){
+                        searchLayout.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+        });
     }
 
     private void fetchAndDisplayArticles(String query, int limit, int start) {
