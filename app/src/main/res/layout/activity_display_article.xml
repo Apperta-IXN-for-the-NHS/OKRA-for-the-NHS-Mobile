@@ -64,8 +64,8 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/likeButton"
-            android:text="Like"
+            android:id="@+id/upvote_button"
+            android:text="@string/upvoteButtonText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="false"
@@ -79,8 +79,8 @@
             />
 
         <Button
-            android:id="@+id/dislikeButton"
-            android:text="Dislike"
+            android:id="@+id/downvote_button"
+            android:text="@string/downvoteButtonText"
             android:layout_width="0dp"
             android:layout_weight="0.5"
             android:layout_height="wrap_content"

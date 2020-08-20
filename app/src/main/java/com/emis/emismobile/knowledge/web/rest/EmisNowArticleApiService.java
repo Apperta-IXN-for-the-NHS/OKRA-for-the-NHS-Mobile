@@ -1,4 +1,6 @@
-package com.emis.emismobile.knowledge;
+package com.emis.emismobile.knowledge.web.rest;
+
+import com.emis.emismobile.knowledge.Article;
 
 import java.util.List;
 

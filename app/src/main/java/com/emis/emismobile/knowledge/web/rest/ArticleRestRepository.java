@@ -1,26 +1,31 @@
-package com.emis.emismobile.knowledge;
+package com.emis.emismobile.knowledge.web.rest;
+
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.emis.emismobile.knowledge.Article;
 
 import java.util.List;
 
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ArticleRepository {
+public class ArticleRestRepository {
 
     private final String API_BASE_URL = "http://162.62.53.126:4123";
+    private static final String TAG = "ArticleRestRepository";
 
-    private static ArticleRepository instance = null;
+    private static ArticleRestRepository instance = null;
     private EmisNowArticleApiService webService;
 
-    private ArticleRepository() {
+    private ArticleRestRepository() {
         buildRetrofit();
     }
 
@@ -33,9 +38,9 @@ public class ArticleRepository {
         webService = retrofit.create(EmisNowArticleApiService.class);
     }
 
-    public static ArticleRepository getInstance() {
+    public static ArticleRestRepository getInstance() {
         if (instance == null) {
-            instance = new ArticleRepository();
+            instance = new ArticleRestRepository();
         }
 
         return instance;
@@ -48,9 +53,14 @@ public class ArticleRepository {
             @Override
             public void onResponse(@NonNull Call<Article> call,
                                    @NonNull Response<Article> response) {
+                logRequest(call.request());
+
                 if (!response.isSuccessful()) {
+                    logError(response);
+
                     return;
                 }
+                logResponse(response);
 
                 article.setValue(response.body());
             }
@@ -73,9 +83,14 @@ public class ArticleRepository {
             @Override
             public void onResponse(@NonNull Call<List<Article>> call,
                                    @NonNull Response<List<Article>> response) {
+                logRequest(call.request());
+
                 if (!response.isSuccessful()) {
+                    logError(response);
+
                     return;
                 }
+                logResponse(response);
 
                 articles.setValue(response.body());
             }
@@ -89,5 +104,17 @@ public class ArticleRepository {
         });
 
         return articles;
+    }
+
+    private static void logRequest(Request request) {
+        Log.i(TAG, String.format("Making a request: %s", request.toString()));
+    }
+
+    private static void logResponse(Response response) {
+        Log.i(TAG, String.format("Response: code %d: %s", response.code(), response.message()));
+    }
+
+    private static void logError(Response response) {
+        Log.e(TAG, String.format("Error: code %d: %s", response.code(), response.message()));
     }
 }
