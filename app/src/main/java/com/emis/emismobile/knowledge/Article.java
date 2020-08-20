@@ -51,11 +51,11 @@ public class Article {
     public String getDate() {
         String[] parts = date.split("-");
 
-        if(parts.length < 3){
+        if (parts.length < 3) {
             return date;
         }
 
-        return parts[2]+"/"+parts[1]+"/"+parts[0];
+        return parts[2] + "/" + parts[1] + "/" + parts[0];
     }
 
     public void setDate(String date) {

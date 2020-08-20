@@ -82,12 +82,12 @@ public class DisplayArticleActivity extends AppCompatActivity {
 
                 if (scrollView.getScrollY() > y) {
                     //scroll down
-                    if (diff > 20) {
+                    if (diff > 50) {
                         buttonsLayout.setVisibility(View.GONE);
                     }
                 } else if (scrollView.getScrollY() < y) {
                     //scroll up
-                    if (diff > 20) {
+                    if (diff > 50) {
                         buttonsLayout.setVisibility(View.VISIBLE);
                     }
                 }
