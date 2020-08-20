@@ -76,10 +76,10 @@ public class ArticleRestRepository {
         return article;
     }
 
-    public LiveData<List<Article>> fetchArticles(int limit, int start) {
+    public LiveData<List<Article>> fetchArticles(String query, int limit, int start) {
         final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
 
-        webService.getArticles(limit, start).enqueue(new Callback<List<Article>>() {
+        webService.getArticles(query, limit, start).enqueue(new Callback<List<Article>>() {
             @Override
             public void onResponse(@NonNull Call<List<Article>> call,
                                    @NonNull Response<List<Article>> response) {

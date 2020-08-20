@@ -21,7 +21,6 @@ import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
-import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 
 import java.util.List;
@@ -83,12 +82,12 @@ public class DisplayArticleActivity extends AppCompatActivity {
 
                 if (scrollView.getScrollY() > y) {
                     //scroll down
-                    if (diff > 20) {
+                    if (diff > 50) {
                         buttonsLayout.setVisibility(View.GONE);
                     }
                 } else if (scrollView.getScrollY() < y) {
                     //scroll up
-                    if (diff > 20) {
+                    if (diff > 50) {
                         buttonsLayout.setVisibility(View.VISIBLE);
                     }
                 }

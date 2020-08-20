@@ -12,7 +12,7 @@ import retrofit2.http.Query;
 public interface EmisNowArticleApiService {
 
     @GET("/articles")
-    Call<List<Article>> getArticles(@Query("limit") int limit, @Query("start") int start);
+    Call<List<Article>> getArticles(@Query("query") String query, @Query("limit") int limit, @Query("start") int start);
 
     @GET("/articles/{id}")
     Call<Article> getArticle(@Path("id") String id);
