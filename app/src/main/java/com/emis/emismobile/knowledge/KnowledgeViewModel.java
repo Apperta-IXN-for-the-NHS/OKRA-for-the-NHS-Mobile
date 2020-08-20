@@ -27,7 +27,7 @@ public class KnowledgeViewModel extends ViewModel {
                 || !selectedArticle.getValue().getId().equals(articleId);
     }
 
-    public LiveData<List<Article>> getArticles(int limit, int start) {
-        return articleRestRepository.fetchArticles(limit, start);
+    public LiveData<List<Article>> getArticles(String query, int limit, int start) {
+        return articleRestRepository.fetchArticles(query, limit, start);
     }
 }
