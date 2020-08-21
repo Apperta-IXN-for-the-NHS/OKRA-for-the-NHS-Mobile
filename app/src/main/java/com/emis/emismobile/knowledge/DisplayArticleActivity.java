@@ -23,7 +23,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.emis.emismobile.R;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayArticleActivity extends AppCompatActivity {
     private String displayedArticleId;
@@ -198,5 +200,16 @@ public class DisplayArticleActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private static class VoteButtonsState {
+        private boolean[] pressed = new boolean[2];
+        private String[][] buttonText = {
+                {"Like", "Liked"},
+                {"Dislike", "Disliked"}
+        };
+
+        VoteButtonsState(boolean like, boolean dislike) {
+        }
     }
 }
