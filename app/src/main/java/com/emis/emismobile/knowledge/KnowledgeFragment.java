@@ -54,11 +54,9 @@ public class KnowledgeFragment extends Fragment {
     }
 
     private void setUpSearchBar() {
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                query = getSearchBarText();
-                searchArticles();
-            }
+        searchButton.setOnClickListener(v -> {
+            query = getSearchBarText();
+            searchArticles();
         });
 
         searchBar.setOnKeyListener((v, keyCode, event) -> {
@@ -100,8 +98,6 @@ public class KnowledgeFragment extends Fragment {
         });
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            float y = 0;
-
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
