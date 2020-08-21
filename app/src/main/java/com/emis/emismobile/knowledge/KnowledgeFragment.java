@@ -1,5 +1,6 @@
 package com.emis.emismobile.knowledge;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -32,6 +33,7 @@ public class KnowledgeFragment extends Fragment {
     private Button searchButton;
     private LinearLayout linearLayout;
     private LinearLayout searchLayout;
+    private String query;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_knowledge, container, false);
@@ -44,18 +46,25 @@ public class KnowledgeFragment extends Fragment {
         setUpRecyclerView();
         setUpDynamicFetchOnScroll();
         setUpSearchBar();
+        query = "";
 
-        fetchAndDisplayArticles("", 10, 0);
+        fetchAndDisplayArticles(10, 0);
 
         return root;
     }
 
     private void setUpSearchBar() {
-        searchButton.setOnClickListener(v -> searchArticles());
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                query = getSearchBarText();
+                searchArticles();
+            }
+        });
 
         searchBar.setOnKeyListener((v, keyCode, event) -> {
             // If the event is a key-down event on the "enter" button
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                query = getSearchBarText();
                 searchArticles();
             }
             return false;
@@ -65,7 +74,7 @@ public class KnowledgeFragment extends Fragment {
 
     public void searchArticles() {
         articles.clear();
-        fetchAndDisplayArticles(getSearchBarText(), 5, 0);
+        fetchAndDisplayArticles(5, 0);
         //close keyboard
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(linearLayout.getWindowToken(), 0);
@@ -81,11 +90,11 @@ public class KnowledgeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void setUpDynamicFetchOnScroll() {
         recyclerView.setOnTouchListener((v, event) -> {
             if (!recyclerView.canScrollVertically(1)) {
-                String query = getSearchBarText();
-                loadMoreArticles(query, 5);
+                loadMoreArticles(5);
             }
             return false;
         });
@@ -120,7 +129,7 @@ public class KnowledgeFragment extends Fragment {
         });
     }
 
-    private void fetchAndDisplayArticles(String query, int limit, int start) {
+    private void fetchAndDisplayArticles(int limit, int start) {
         KnowledgeViewModel viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
         viewModel.getArticles(query, limit, start).observe(getViewLifecycleOwner(), this::updateArticleList);
     }
@@ -130,7 +139,7 @@ public class KnowledgeFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
-    private void loadMoreArticles(String query, int limit) {
-        fetchAndDisplayArticles(query, limit, articles.size());
+    private void loadMoreArticles(int limit) {
+        fetchAndDisplayArticles(limit, articles.size());
     }
 }
