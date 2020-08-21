@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
@@ -23,9 +24,13 @@ import androidx.lifecycle.ViewModelProvider;
 import com.emis.emismobile.R;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DisplayArticleActivity extends AppCompatActivity {
+    private enum ButtonToggle {ON, OFF}
+
     private String displayedArticleId;
 
     private TextView bodyTextView;
@@ -37,6 +42,8 @@ public class DisplayArticleActivity extends AppCompatActivity {
     private ScrollView scrollView;
     private Button upvoteButton;
     private Button downvoteButton;
+
+    private VoteButtonsState buttonsState;
 
     private KnowledgeViewModel viewModel;
 
@@ -98,33 +105,27 @@ public class DisplayArticleActivity extends AppCompatActivity {
 
     private void setupVoteButtons() {
         VoteType voteType = voteService.getVote(displayedArticleId);
-        setButtonColorsAndText(voteType);
+        buttonsState = new VoteButtonsState(voteType);
+        setButtonColorsAndText();
 
         upvoteButton.setOnClickListener(v -> {
-            setButtonColorsAndText(VoteType.UPVOTE);
+            buttonsState.pressUpvote();
+            setButtonColorsAndText();
             voteService.upvote(displayedArticleId);
         });
 
         downvoteButton.setOnClickListener(v -> {
-            setButtonColorsAndText(VoteType.DOWNVOTE);
+            buttonsState.pressDownvote();
+            setButtonColorsAndText();
             voteService.downvote(displayedArticleId);
         });
     }
 
-    private void setButtonColorsAndText(VoteType voteType) {
-        int defaultColor = android.R.color.white;
-
-        if (VoteType.UPVOTE.equals(voteType)) {
-            setButtonColor(upvoteButton, R.color.upvoteGreen);
-            setButtonText(upvoteButton, "Liked");
-            setButtonColor(downvoteButton, defaultColor);
-            setButtonText(downvoteButton, "Dislike");
-        } else if (VoteType.DOWNVOTE.equals(voteType)) {
-            setButtonColor(downvoteButton, R.color.downvoteRed);
-            setButtonText(downvoteButton, "Disliked");
-            setButtonColor(upvoteButton, defaultColor);
-            setButtonText(upvoteButton, "Like");
-        }
+    private void setButtonColorsAndText() {
+        setButtonText(upvoteButton, buttonsState.getButtonText(VoteType.UPVOTE));
+        setButtonColor(upvoteButton, buttonsState.getButtonColor(VoteType.UPVOTE));
+        setButtonText(downvoteButton, buttonsState.getButtonText(VoteType.DOWNVOTE));
+        setButtonColor(downvoteButton, buttonsState.getButtonColor(VoteType.DOWNVOTE));
     }
 
     private void setButtonColor(Button button, int color) {
@@ -198,5 +199,98 @@ public class DisplayArticleActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private class VoteButtonsState {
+        private final Map<VoteType, Map<ButtonToggle, Integer>> buttonColor = initializeColorMap();
+        private final Map<VoteType, Map<ButtonToggle, String>> buttonTextMap = initializeTextMap();
+
+        private Map<VoteType, ButtonToggle> state;
+
+        public VoteButtonsState(VoteType initialVote) {
+            state = initializeState(initialVote);
+        }
+
+        private Map<VoteType, ButtonToggle> initializeState(@Nullable VoteType voteType) {
+            Map<VoteType, ButtonToggle> initialState = new HashMap<>();
+            initialState.put(VoteType.UPVOTE, ButtonToggle.OFF);
+            initialState.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
+
+            if (voteType != null) {
+                initialState.put(voteType, ButtonToggle.ON);
+            }
+
+            return initialState;
+        }
+
+        private void pressUpvote() {
+            if (ButtonToggle.OFF.equals(state.get(VoteType.UPVOTE))) {
+                state.put(VoteType.UPVOTE, ButtonToggle.ON);
+                if (ButtonToggle.ON.equals(state.get(VoteType.DOWNVOTE))) {
+                    state.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
+                }
+            } else {
+                state.put(VoteType.UPVOTE, ButtonToggle.OFF);
+            }
+        }
+
+        private void pressDownvote() {
+            if (ButtonToggle.OFF.equals(state.get(VoteType.DOWNVOTE))) {
+                state.put(VoteType.DOWNVOTE, ButtonToggle.ON);
+                if (ButtonToggle.ON.equals(state.get(VoteType.UPVOTE))) {
+                    state.put(VoteType.UPVOTE, ButtonToggle.OFF);
+                }
+            } else {
+                state.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
+            }
+        }
+
+        private String getButtonText(VoteType buttonType) {
+            ButtonToggle currentPosition = state.get(buttonType);
+
+            return buttonTextMap.get(buttonType).get(currentPosition);
+        }
+
+        private Integer getButtonColor(VoteType buttonType) {
+            ButtonToggle currentPosition = state.get(buttonType);
+
+            return buttonColor.get(buttonType).get(currentPosition);
+        }
+
+        private Map<VoteType, Map<ButtonToggle, Integer>> initializeColorMap() {
+            int defaultColor = android.R.color.white;
+
+            Map<ButtonToggle, Integer> upvoteColor = new HashMap<ButtonToggle, Integer>() {{
+                put(ButtonToggle.ON, R.color.upvoteGreen);
+                put(ButtonToggle.OFF, defaultColor);
+            }};
+
+            Map<ButtonToggle, Integer> downvoteColor = new HashMap<ButtonToggle, Integer>() {{
+                put(ButtonToggle.ON, R.color.downvoteRed);
+                put(ButtonToggle.OFF, defaultColor);
+            }};
+
+            return new HashMap<VoteType, Map<ButtonToggle, Integer>>(){{
+                put(VoteType.UPVOTE, upvoteColor);
+                put(VoteType.DOWNVOTE, downvoteColor);
+            }};
+        }
+
+        private Map<VoteType, Map<ButtonToggle, String>> initializeTextMap() {
+            Map<ButtonToggle, String> upvoteText = new HashMap<ButtonToggle, String>() {{
+                put(ButtonToggle.ON, getString(R.string.upvoteButtonTextPressed));
+                put(ButtonToggle.OFF, getString(R.string.upvoteButtonText));
+            }};
+
+            Map<ButtonToggle, String> downvoteText = new HashMap<ButtonToggle, String>() {{
+                put(ButtonToggle.ON, getString(R.string.downvoteButtonTextPressed));
+                put(ButtonToggle.OFF, getString(R.string.downvoteButtonText));
+            }};
+
+            return new HashMap<VoteType, Map<ButtonToggle, String>>(){{
+                put(VoteType.UPVOTE, upvoteText);
+                put(VoteType.DOWNVOTE, downvoteText);
+            }};
+        }
     }
 }
