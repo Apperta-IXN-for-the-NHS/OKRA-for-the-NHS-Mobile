@@ -8,8 +8,8 @@ android {
         applicationId "com.emis.emismobile"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 16
-        versionName "0.13.1"
+        versionCode 17
+        versionName "0.13.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
