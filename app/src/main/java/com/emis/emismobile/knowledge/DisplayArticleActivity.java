@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DisplayArticleActivity extends AppCompatActivity {
-    private enum Position {ON, OFF}
+    private enum ButtonToggle {ON, OFF}
 
     private String displayedArticleId;
 
@@ -202,92 +202,92 @@ public class DisplayArticleActivity extends AppCompatActivity {
     }
 
     private class VoteButtonsState {
-        private final Map<VoteType, Map<Position, Integer>> buttonColor = initializeColorMap();
-        private final Map<VoteType, Map<Position, String>> buttonTextMap = initializeTextMap();
+        private final Map<VoteType, Map<ButtonToggle, Integer>> buttonColor = initializeColorMap();
+        private final Map<VoteType, Map<ButtonToggle, String>> buttonTextMap = initializeTextMap();
 
-        private Map<VoteType, Position> state;
+        private Map<VoteType, ButtonToggle> state;
 
         public VoteButtonsState(VoteType initialVote) {
             state = initializeState(initialVote);
         }
 
-        private Map<VoteType, Position> initializeState(@Nullable VoteType voteType) {
-            Map<VoteType, Position> initialState = new HashMap<>();
-            initialState.put(VoteType.UPVOTE, Position.OFF);
-            initialState.put(VoteType.DOWNVOTE, Position.OFF);
+        private Map<VoteType, ButtonToggle> initializeState(@Nullable VoteType voteType) {
+            Map<VoteType, ButtonToggle> initialState = new HashMap<>();
+            initialState.put(VoteType.UPVOTE, ButtonToggle.OFF);
+            initialState.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
 
             if (voteType != null) {
-                initialState.put(voteType, Position.ON);
+                initialState.put(voteType, ButtonToggle.ON);
             }
 
             return initialState;
         }
 
         private void pressUpvote() {
-            if (Position.OFF.equals(state.get(VoteType.UPVOTE))) {
-                state.put(VoteType.UPVOTE, Position.ON);
-                if (Position.ON.equals(state.get(VoteType.DOWNVOTE))) {
-                    state.put(VoteType.DOWNVOTE, Position.OFF);
+            if (ButtonToggle.OFF.equals(state.get(VoteType.UPVOTE))) {
+                state.put(VoteType.UPVOTE, ButtonToggle.ON);
+                if (ButtonToggle.ON.equals(state.get(VoteType.DOWNVOTE))) {
+                    state.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
                 }
             } else {
-                state.put(VoteType.UPVOTE, Position.OFF);
+                state.put(VoteType.UPVOTE, ButtonToggle.OFF);
             }
         }
 
         private void pressDownvote() {
-            if (Position.OFF.equals(state.get(VoteType.DOWNVOTE))) {
-                state.put(VoteType.DOWNVOTE, Position.ON);
-                if (Position.ON.equals(state.get(VoteType.UPVOTE))) {
-                    state.put(VoteType.UPVOTE, Position.OFF);
+            if (ButtonToggle.OFF.equals(state.get(VoteType.DOWNVOTE))) {
+                state.put(VoteType.DOWNVOTE, ButtonToggle.ON);
+                if (ButtonToggle.ON.equals(state.get(VoteType.UPVOTE))) {
+                    state.put(VoteType.UPVOTE, ButtonToggle.OFF);
                 }
             } else {
-                state.put(VoteType.DOWNVOTE, Position.OFF);
+                state.put(VoteType.DOWNVOTE, ButtonToggle.OFF);
             }
         }
 
         private String getButtonText(VoteType buttonType) {
-            Position currentPosition = state.get(buttonType);
+            ButtonToggle currentPosition = state.get(buttonType);
 
             return buttonTextMap.get(buttonType).get(currentPosition);
         }
 
         private Integer getButtonColor(VoteType buttonType) {
-            Position currentPosition = state.get(buttonType);
+            ButtonToggle currentPosition = state.get(buttonType);
 
             return buttonColor.get(buttonType).get(currentPosition);
         }
 
-        private Map<VoteType, Map<Position, Integer>> initializeColorMap() {
+        private Map<VoteType, Map<ButtonToggle, Integer>> initializeColorMap() {
             int defaultColor = android.R.color.white;
 
-            Map<Position, Integer> upvoteColor = new HashMap<Position, Integer>() {{
-                put(Position.ON, R.color.upvoteGreen);
-                put(Position.OFF, defaultColor);
+            Map<ButtonToggle, Integer> upvoteColor = new HashMap<ButtonToggle, Integer>() {{
+                put(ButtonToggle.ON, R.color.upvoteGreen);
+                put(ButtonToggle.OFF, defaultColor);
             }};
 
-            Map<Position, Integer> downvoteColor = new HashMap<Position, Integer>() {{
-                put(Position.ON, R.color.downvoteRed);
-                put(Position.OFF, defaultColor);
+            Map<ButtonToggle, Integer> downvoteColor = new HashMap<ButtonToggle, Integer>() {{
+                put(ButtonToggle.ON, R.color.downvoteRed);
+                put(ButtonToggle.OFF, defaultColor);
             }};
 
-            return new HashMap<VoteType, Map<Position, Integer>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, Integer>>(){{
                 put(VoteType.UPVOTE, upvoteColor);
                 put(VoteType.DOWNVOTE, downvoteColor);
             }};
         }
 
-        private Map<VoteType, Map<Position, String>> initializeTextMap() {
-            Map<Position, String> upvoteText = new HashMap<Position, String>() {{
-                put(Position.ON, getString(R.string.upvoteButtonTextPressed));
-                put(Position.OFF, getString(R.string.upvoteButtonText));
+        private Map<VoteType, Map<ButtonToggle, String>> initializeTextMap() {
+            Map<ButtonToggle, String> upvoteText = new HashMap<ButtonToggle, String>() {{
+                put(ButtonToggle.ON, getString(R.string.upvoteButtonTextPressed));
+                put(ButtonToggle.OFF, getString(R.string.upvoteButtonText));
             }};
 
-            Map<Position, String> downvoteText = new HashMap<Position, String>() {{
-                put(Position.ON, getString(R.string.downvoteButtonTextPressed));
-                put(Position.OFF, getString(R.string.downvoteButtonText));
+            Map<ButtonToggle, String> downvoteText = new HashMap<ButtonToggle, String>() {{
+                put(ButtonToggle.ON, getString(R.string.downvoteButtonTextPressed));
+                put(ButtonToggle.OFF, getString(R.string.downvoteButtonText));
             }};
 
-            return new HashMap<VoteType, Map<Position, String>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, String>>(){{
                 put(VoteType.UPVOTE, upvoteText);
                 put(VoteType.DOWNVOTE, downvoteText);
             }};
