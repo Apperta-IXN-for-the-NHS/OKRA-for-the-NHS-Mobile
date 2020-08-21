@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.13.1] - 2020-08-21
 
 ### Fixed
-- Issue that searching was being done on scroll even without buttonType click
+- Issue that searching was being done on scroll even without button click
 
 ## [0.13.0] - 2020-08-20
 
@@ -58,7 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.8.1] - 2020-08-17
 
 ### Fixed
-- Back buttonType in the DisplayArticle page to keep the same position of the list
+- Back button in the DisplayArticle page to keep the same position of the list
 
 ## [0.8.0] - 2020-08-16
 
@@ -99,7 +99,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Empty WebView with example.com
-- Floating buttonType opening the phone app of the mobile device with a configured phone number
+- Floating button opening the phone app of the mobile device with a configured phone number
 
 
 ## [0.2.0] - 2020-07-26
