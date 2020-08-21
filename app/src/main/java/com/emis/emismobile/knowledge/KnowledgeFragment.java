@@ -59,7 +59,7 @@ public class KnowledgeFragment extends Fragment {
             searchArticles();
         });
 
-        searchBar.setOnKeyListener((v, keyCode, event) -> {
+        searchBar.getEditText().setOnKeyListener((v, keyCode, event) -> {
             // If the event is a key-down event on the "enter" button
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 query = getSearchBarText();
