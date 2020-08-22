@@ -258,7 +258,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
         }
 
         private Map<VoteType, Map<ButtonToggle, Integer>> initializeColorMap() {
-            int defaultColor = android.R.color.white;
+            int defaultColor = R.color.white;
 
             Map<ButtonToggle, Integer> upvoteColor = new HashMap<ButtonToggle, Integer>() {{
                 put(ButtonToggle.ON, R.color.upvoteGreen);
@@ -270,7 +270,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
                 put(ButtonToggle.OFF, defaultColor);
             }};
 
-            return new HashMap<VoteType, Map<ButtonToggle, Integer>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, Integer>>() {{
                 put(VoteType.UPVOTE, upvoteColor);
                 put(VoteType.DOWNVOTE, downvoteColor);
             }};
@@ -287,7 +287,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
                 put(ButtonToggle.OFF, getString(R.string.downvoteButtonText));
             }};
 
-            return new HashMap<VoteType, Map<ButtonToggle, String>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, String>>() {{
                 put(VoteType.UPVOTE, upvoteText);
                 put(VoteType.DOWNVOTE, downvoteText);
             }};
