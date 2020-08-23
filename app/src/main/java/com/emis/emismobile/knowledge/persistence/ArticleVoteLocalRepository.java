@@ -10,9 +10,8 @@ public class ArticleVoteLocalRepository {
 
     private SharedPreferences sharedPreferences;
 
-    public ArticleVoteLocalRepository(Context context) {
-        sharedPreferences = context.getSharedPreferences(context.getString(R.string.preference_file_key),
-                                                         Context.MODE_PRIVATE);
+    public ArticleVoteLocalRepository(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
     }
 
     /**
