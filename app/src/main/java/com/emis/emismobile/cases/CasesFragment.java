@@ -2,6 +2,7 @@ package com.emis.emismobile.cases;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.emis.emismobile.R;
 import com.emis.emismobile.cases.Case;
 import com.emis.emismobile.cases.CasesAdapter;
 import com.emis.emismobile.cases.CasesViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class CasesFragment extends Fragment {
     private CasesAdapter adapter;
     private TextInputLayout searchBar;
     private Button searchButton;
+    private FloatingActionButton newCaseButton;
     private LinearLayout linearLayout;
     private LinearLayout searchLayout;
     private String query;
@@ -44,6 +47,14 @@ public class CasesFragment extends Fragment {
         searchButton = root.findViewById(R.id.search_button);
         linearLayout = root.findViewById(R.id.linear_layout);
         searchLayout = root.findViewById(R.id.search_layout);
+        newCaseButton = root.findViewById(R.id.new_case_button);
+
+        newCaseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCaseForm();
+            }
+        });
 
         setUpRecyclerView();
         setUpDynamicFetchOnScroll();
@@ -53,6 +64,11 @@ public class CasesFragment extends Fragment {
         fetchAndDisplayCases(10, 0);
 
         return root;
+    }
+
+    private void openCaseForm(){
+        Intent intent = new Intent(this.getContext(), NewCaseActivity.class);
+        this.getContext().startActivity(intent);
     }
 
     private void setUpSearchBar() {

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true">
+
+    <ScrollView
+        android:id="@+id/case_scrollview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <android.widget.LinearLayout
+            android:id="@+id/case_linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/title_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/body_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Body"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:paddingBottom="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/priorities_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/priorities_dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/open_case_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Open Case"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/error_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please input all fields."
+                android:visibility="gone"
+                android:textColor="@android:color/black"/>
+
+        </android.widget.LinearLayout>
+    </ScrollView>
+</RelativeLayout>
+
+
+
+
