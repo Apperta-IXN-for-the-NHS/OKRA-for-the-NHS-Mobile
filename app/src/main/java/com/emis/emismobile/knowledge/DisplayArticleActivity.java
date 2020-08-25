@@ -2,6 +2,7 @@ package com.emis.emismobile.knowledge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +23,9 @@ import androidx.core.view.ViewCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
+import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
+import com.emis.emismobile.knowledge.web.rest.ArticleRestRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,17 +56,25 @@ public class DisplayArticleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(KnowledgeViewModel.class);
-        voteService = new ArticleVoteService(this);
 
         Intent intent = getIntent();
         displayedArticleId = intent.getStringExtra("article_id");
 
+        wireVoteService();
         setContentView(R.layout.activity_display_article);
         setupViewComponents();
         setupScroll();
         setupVoteButtons();
 
         fetchSelectedArticle();
+    }
+
+    private void wireVoteService() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),
+                                                                   Context.MODE_PRIVATE);
+        ArticleVoteLocalRepository voteRepository = new ArticleVoteLocalRepository(sharedPreferences);
+        ArticleRestRepository restRepository = ArticleRestRepository.getInstance();
+        voteService = new ArticleVoteService(voteRepository, restRepository);
     }
 
     private void setupViewComponents() {
@@ -154,7 +165,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
             setTitle("Article");
             listRelatedArticles(article);
         } else {
-            bodyTextView.setText("This article is empty.");
+            titleTextView.setText("This article is empty.");
         }
     }
 
@@ -258,7 +269,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
         }
 
         private Map<VoteType, Map<ButtonToggle, Integer>> initializeColorMap() {
-            int defaultColor = android.R.color.white;
+            int defaultColor = R.color.white;
 
             Map<ButtonToggle, Integer> upvoteColor = new HashMap<ButtonToggle, Integer>() {{
                 put(ButtonToggle.ON, R.color.upvoteGreen);
@@ -270,7 +281,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
                 put(ButtonToggle.OFF, defaultColor);
             }};
 
-            return new HashMap<VoteType, Map<ButtonToggle, Integer>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, Integer>>() {{
                 put(VoteType.UPVOTE, upvoteColor);
                 put(VoteType.DOWNVOTE, downvoteColor);
             }};
@@ -287,7 +298,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
                 put(ButtonToggle.OFF, getString(R.string.downvoteButtonText));
             }};
 
-            return new HashMap<VoteType, Map<ButtonToggle, String>>(){{
+            return new HashMap<VoteType, Map<ButtonToggle, String>>() {{
                 put(VoteType.UPVOTE, upvoteText);
                 put(VoteType.DOWNVOTE, downvoteText);
             }};

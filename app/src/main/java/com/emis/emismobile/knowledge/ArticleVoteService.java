@@ -2,20 +2,22 @@ package com.emis.emismobile.knowledge;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 
+import com.emis.emismobile.R;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 import com.emis.emismobile.knowledge.web.rest.ArticleRestRepository;
 
 
-public class ArticleVoteService extends ContextWrapper {
+public class ArticleVoteService {
     private ArticleVoteLocalRepository voteRepository;
     private ArticleRestRepository articleRestRepository;
 
-    public ArticleVoteService(Context base) {
-        super(base);
-        voteRepository = new ArticleVoteLocalRepository(this);
-        articleRestRepository = ArticleRestRepository.getInstance();
+    public ArticleVoteService(ArticleVoteLocalRepository voteRepository,
+                              ArticleRestRepository articleRestRepository) {
+        this.voteRepository = voteRepository;
+        this.articleRestRepository = articleRestRepository;
     }
 
     public VoteType getVote(String articleId) {
