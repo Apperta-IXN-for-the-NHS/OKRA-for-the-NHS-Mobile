@@ -30,4 +30,8 @@ public class CasesViewModel extends ViewModel {
     public LiveData<List<Case>> getCases(String query, int limit, int start) {
         return casesRestRepository.fetchCases(query, limit, start);
     }
+
+    public void newCase(Case c){
+        casesRestRepository.newCase(c);
+    }
 }

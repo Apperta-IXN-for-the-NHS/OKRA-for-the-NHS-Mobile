@@ -107,6 +107,25 @@ public class CaseRestRepository {
         return cases;
     }
 
+    public void newCase(Case c){
+        Call<Case> call = webService.newCase(c);
+        call.enqueue(new Callback<Case>(){
+
+            @Override
+            public void onResponse(Call<Case> call, Response<Case> response) {
+                if(!response.isSuccessful()){
+                    System.out.println("code: " + response.code());
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Case> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
     private static void logRequest(Request request) {
         Log.i(TAG, String.format("Making a request: %s", request.toString()));
     }

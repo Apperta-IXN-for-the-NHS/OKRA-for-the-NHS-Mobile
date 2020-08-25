@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 import com.emis.emismobile.R;
 import com.google.android.material.textfield.TextInputLayout;
 
+import retrofit2.Call;
+
 import static java.security.AccessController.getContext;
 
 public class NewCaseActivity extends AppCompatActivity {
@@ -66,7 +68,15 @@ public class NewCaseActivity extends AppCompatActivity {
         String priority = priorityField.getEditText().getText().toString().trim();
 
         if(formIsValid(title, body, priority)){
-            System.out.println("valid");
+            int p = 0;
+            switch (priority){
+                case "Critical":{p=1;break;}
+                case "High":{p=2;break;}
+                case "Moderate":{p=3;break;}
+                case "Low":{p=4;break;}
+            }
+            createCase(title,body,p);
+
         }else{
             System.out.println("invalid");
             errorMessage.setVisibility(View.VISIBLE);
@@ -78,5 +88,10 @@ public class NewCaseActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+    public void createCase(String title, String body, int priority){
+        Case c = new Case(title,priority,body);
+        viewModel.newCase(c);
     }
 }
