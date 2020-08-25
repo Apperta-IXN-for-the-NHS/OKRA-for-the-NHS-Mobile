@@ -165,7 +165,7 @@ public class DisplayArticleActivity extends AppCompatActivity {
             setTitle("Article");
             listRelatedArticles(article);
         } else {
-            bodyTextView.setText("This article is empty.");
+            titleTextView.setText("This article is empty.");
         }
     }
 

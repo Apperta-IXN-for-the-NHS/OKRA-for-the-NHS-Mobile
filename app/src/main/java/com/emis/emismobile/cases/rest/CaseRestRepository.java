@@ -1,4 +1,4 @@
-package com.emis.emismobile.knowledge.web.rest;
+package com.emis.emismobile.cases.rest;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emis.emismobile.EmisNowApiService;
-import com.emis.emismobile.knowledge.Article;
+import com.emis.emismobile.cases.Case;
 
 import java.util.List;
 
@@ -18,15 +18,15 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ArticleRestRepository {
+public class CaseRestRepository {
 
     private final String API_BASE_URL = "http://162.62.53.126:4123";
-    private static final String TAG = "ArticleRestRepository";
+    private static final String TAG = "CaseRestRepository";
 
-    private static ArticleRestRepository instance = null;
+    private static CaseRestRepository instance = null;
     private EmisNowApiService webService;
 
-    private ArticleRestRepository() {
+    private CaseRestRepository() {
         buildRetrofit();
     }
 
@@ -39,21 +39,21 @@ public class ArticleRestRepository {
         webService = retrofit.create(EmisNowApiService.class);
     }
 
-    public static ArticleRestRepository getInstance() {
+    public static CaseRestRepository getInstance() {
         if (instance == null) {
-            instance = new ArticleRestRepository();
+            instance = new CaseRestRepository();
         }
 
         return instance;
     }
 
-    public LiveData<Article> fetchArticleById(String id) {
-        final MutableLiveData<Article> article = new MutableLiveData<>();
+    public LiveData<Case> fetchCaseById(String id) {
+        final MutableLiveData<Case> c = new MutableLiveData<>();
 
-        webService.getArticle(id).enqueue(new Callback<Article>() {
+        webService.getCase(id).enqueue(new Callback<Case>() {
             @Override
-            public void onResponse(@NonNull Call<Article> call,
-                                   @NonNull Response<Article> response) {
+            public void onResponse(@NonNull Call<Case> call,
+                                   @NonNull Response<Case> response) {
                 logRequest(call.request());
 
                 if (!response.isSuccessful()) {
@@ -63,27 +63,27 @@ public class ArticleRestRepository {
                 }
                 logResponse(response);
 
-                article.setValue(response.body());
+                c.setValue(response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<Article> call,
+            public void onFailure(@NonNull Call<Case> call,
                                   @NonNull Throwable t) {
                 // todo
                 System.err.println(t.getMessage());
             }
         });
 
-        return article;
+        return c;
     }
 
-    public LiveData<List<Article>> fetchArticles(String query, int limit, int start) {
-        final MutableLiveData<List<Article>> articles = new MutableLiveData<>();
+    public LiveData<List<Case>> fetchCases(String query, int limit, int start) {
+        final MutableLiveData<List<Case>> cases = new MutableLiveData<>();
 
-        webService.getArticles(query, limit, start).enqueue(new Callback<List<Article>>() {
+        webService.getCases(query, limit, start).enqueue(new Callback<List<Case>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Article>> call,
-                                   @NonNull Response<List<Article>> response) {
+            public void onResponse(@NonNull Call<List<Case>> call,
+                                   @NonNull Response<List<Case>> response) {
                 logRequest(call.request());
 
                 if (!response.isSuccessful()) {
@@ -93,18 +93,18 @@ public class ArticleRestRepository {
                 }
                 logResponse(response);
 
-                articles.setValue(response.body());
+                cases.setValue(response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Article>> call,
+            public void onFailure(@NonNull Call<List<Case>> call,
                                   @NonNull Throwable t) {
                 // todo
                 System.err.println(t.getMessage());
             }
         });
 
-        return articles;
+        return cases;
     }
 
     private static void logRequest(Request request) {
