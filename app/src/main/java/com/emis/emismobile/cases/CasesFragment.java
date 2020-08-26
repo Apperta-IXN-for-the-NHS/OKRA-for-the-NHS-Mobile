@@ -18,9 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emis.emismobile.R;
-import com.emis.emismobile.cases.Case;
-import com.emis.emismobile.cases.CasesAdapter;
-import com.emis.emismobile.cases.CasesViewModel;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;

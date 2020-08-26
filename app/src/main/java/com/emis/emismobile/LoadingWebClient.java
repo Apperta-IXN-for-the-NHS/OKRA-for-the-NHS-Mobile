@@ -1,6 +1,5 @@
 package com.emis.emismobile;
 
-import android.graphics.Bitmap;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;

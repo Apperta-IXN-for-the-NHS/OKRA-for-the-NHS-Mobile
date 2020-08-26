@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emis.emismobile.EmisNowApiService;
-import com.emis.emismobile.knowledge.VoidCallback;
 import com.emis.emismobile.knowledge.Article;
+import com.emis.emismobile.knowledge.VoidCallback;
 import com.emis.emismobile.knowledge.Vote;
 
 import java.util.List;

@@ -1,9 +1,6 @@
 package com.emis.emismobile.knowledge.persistence;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-
-import com.emis.emismobile.R;
 
 public class ArticleVoteLocalRepository {
     public enum VoteType {UPVOTE, DOWNVOTE}
