@@ -31,7 +31,7 @@ public class CasesViewModel extends ViewModel {
         return casesRestRepository.fetchCases(query, limit, start);
     }
 
-    public void newCase(Case c){
-        casesRestRepository.newCase(c);
+    public LiveData<Boolean> createCase(Case newCase) {
+        return casesRestRepository.createCase(newCase);
     }
 }

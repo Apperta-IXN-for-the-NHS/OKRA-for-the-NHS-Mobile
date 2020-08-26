@@ -1,24 +1,19 @@
 package com.emis.emismobile.cases;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.emis.emismobile.R;
 import com.google.android.material.textfield.TextInputLayout;
-
-import retrofit2.Call;
-
-import static java.security.AccessController.getContext;
 
 public class NewCaseActivity extends AppCompatActivity {
 
@@ -27,7 +22,9 @@ public class NewCaseActivity extends AppCompatActivity {
     private TextInputLayout titleField;
     private TextInputLayout bodyField;
     private TextInputLayout priorityField;
-    private TextView errorMessage;
+    private AlertDialog.Builder emptyFieldsDialog;
+    private AlertDialog.Builder createSuccessDialog;
+    private AlertDialog.Builder createFailureDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +39,6 @@ public class NewCaseActivity extends AppCompatActivity {
         titleField = this.findViewById(R.id.title_field);
         bodyField = this.findViewById(R.id.body_field);
         priorityField = this.findViewById(R.id.priorities_field);
-        errorMessage = this.findViewById(R.id.error_message);
 
         openCaseButton = this.findViewById(R.id.open_case_button);
         openCaseButton.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +48,9 @@ public class NewCaseActivity extends AppCompatActivity {
             }
         });
 
+        buildEmptyFieldsDialog();
+        buildCreateSuccessDialog();
+        buildCreateFailureDialog();
     }
 
     public void setUpPrioritiesMenu(){
@@ -78,8 +77,7 @@ public class NewCaseActivity extends AppCompatActivity {
             createCase(title,body,p);
 
         }else{
-            System.out.println("invalid");
-            errorMessage.setVisibility(View.VISIBLE);
+            emptyFieldsDialog.show();
         }
     }
 
@@ -91,7 +89,40 @@ public class NewCaseActivity extends AppCompatActivity {
     }
 
     public void createCase(String title, String body, int priority){
-        Case c = new Case(title,priority,body);
-        viewModel.newCase(c);
+        Case newCase = new Case(title,priority,body);
+        viewModel.createCase(newCase).observe(this, this::showDialog);
+    }
+
+    private void showDialog(Boolean isSuccess) {
+        if(isSuccess){
+            createSuccessDialog.show();
+        }else{
+            createFailureDialog.show();
+        }
+    }
+
+    public void buildEmptyFieldsDialog(){
+        emptyFieldsDialog = new AlertDialog.Builder(this);
+        emptyFieldsDialog.setTitle("Dialog");
+        emptyFieldsDialog.setMessage("Please input all fields.");
+        emptyFieldsDialog.setPositiveButton("OK", null);
+    }
+
+    public void buildCreateSuccessDialog(){
+        createSuccessDialog = new AlertDialog.Builder(this);
+        createSuccessDialog.setTitle("Dialog");
+        createSuccessDialog.setMessage("Successfully opened case.");
+        createSuccessDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                onBackPressed();
+            }
+        });
+    }
+
+    public void buildCreateFailureDialog(){
+        createFailureDialog = new AlertDialog.Builder(this);
+        createFailureDialog.setTitle("Dialog");
+        createFailureDialog.setMessage("Failed to open case. Please check your internet connection and try again.");
+        createFailureDialog.setPositiveButton("OK", null);
     }
 }

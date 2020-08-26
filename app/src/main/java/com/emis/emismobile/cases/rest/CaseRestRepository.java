@@ -107,23 +107,27 @@ public class CaseRestRepository {
         return cases;
     }
 
-    public void newCase(Case c){
-        Call<Case> call = webService.newCase(c);
-        call.enqueue(new Callback<Case>(){
+    public MutableLiveData<Boolean> createCase(Case newCase) {
+        final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>();
+
+        Call<Void> call = webService.createCase(newCase);
+        call.enqueue(new Callback<Void>(){
 
             @Override
-            public void onResponse(Call<Case> call, Response<Case> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful()){
-                    System.out.println("code: " + response.code());
+                    isSuccess.setValue(false);
                     return;
                 }
+                isSuccess.setValue(true);
             }
 
             @Override
-            public void onFailure(Call<Case> call, Throwable t) {
-                System.out.println(t.getMessage());
+            public void onFailure(Call<Void> call, Throwable t) {
+                isSuccess.setValue(false);
             }
         });
+        return isSuccess;
     }
 
     private static void logRequest(Request request) {
