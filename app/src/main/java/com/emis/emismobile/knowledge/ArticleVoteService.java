@@ -1,10 +1,5 @@
 package com.emis.emismobile.knowledge;
 
-import android.content.Context;
-import android.content.ContextWrapper;
-import android.content.SharedPreferences;
-
-import com.emis.emismobile.R;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 import com.emis.emismobile.knowledge.web.rest.ArticleRestRepository;
@@ -25,21 +20,31 @@ public class ArticleVoteService {
     }
 
     public void upvote(String articleId) {
-        // todo make request to server
-
-        if (alreadyUpvoted(articleId)) {
+        if (currentlyUpvoted(articleId)) {
+            // todo Vote(1, 0)
             removeVote(articleId);
-        } else {
+        } else if (currentlyDownvoted(articleId)) {
+            // todo Vote(-1, 1)
             voteRepository.addVote(VoteType.UPVOTE, articleId);
+        } else {
+            // todo Vote(0, 1)
         }
     }
 
     public void downvote(String articleId) {
-        // todo make request to server
-
-        if (alreadyDownvoted(articleId)) {
+        Vote vote;
+        if (currentlyDownvoted(articleId)) {
+            // todo Vote(-1, 0)
+            vote = new Vote(articleId, -1, 0);
             removeVote(articleId);
         } else {
+            if (currentlyUpvoted(articleId)) {
+                vote = new Vote(articleId, 1, -1);
+            }
+            vote = new Vote(articleId, 0, -1);
+
+            articleRestRepository.postVote(vote);
+
             voteRepository.addVote(VoteType.DOWNVOTE, articleId);
         }
     }
@@ -50,7 +55,7 @@ public class ArticleVoteService {
      * @param articleId the ID of the article
      * @return true if the article is upvoted, false if it's empty or downvoted
      */
-    public boolean alreadyUpvoted(String articleId) {
+    public boolean currentlyUpvoted(String articleId) {
         return VoteType.UPVOTE.equals(voteRepository.getVote(articleId));
     }
 
@@ -60,7 +65,7 @@ public class ArticleVoteService {
      * @param articleId the ID of the article
      * @return true if the article is downvoted, false if it's empty or upvoted
      */
-    public boolean alreadyDownvoted(String articleId) {
+    public boolean currentlyDownvoted(String articleId) {
         return VoteType.DOWNVOTE.equals(voteRepository.getVote(articleId));
     }
 

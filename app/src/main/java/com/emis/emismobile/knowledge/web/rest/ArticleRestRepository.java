@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.emis.emismobile.EmisNowApiService;
 import com.emis.emismobile.knowledge.Article;
+import com.emis.emismobile.knowledge.Vote;
 
 import java.util.List;
 
@@ -105,6 +106,37 @@ public class ArticleRestRepository {
         });
 
         return articles;
+    }
+
+    public LiveData<String> postVote(Vote vote) {
+        MutableLiveData<String> data = new MutableLiveData<>();
+
+        webService.postVote(vote.getArticleId(), vote).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(@NonNull Call<String> call,
+                                   @NonNull Response<String> response) {
+                logRequest(call.request());
+
+                if (!response.isSuccessful()) {
+                    logError(response);
+
+                    return;
+                }
+                logResponse(response);
+
+                data.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<String> call,
+                                  @NonNull Throwable t) {
+                // todo
+                data.setValue(null);
+                System.err.println(t.getMessage());
+            }
+        });
+
+        return data;
     }
 
     private static void logRequest(Request request) {
