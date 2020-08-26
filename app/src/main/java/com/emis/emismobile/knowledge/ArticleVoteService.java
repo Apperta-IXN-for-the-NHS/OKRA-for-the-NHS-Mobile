@@ -1,51 +1,93 @@
 package com.emis.emismobile.knowledge;
 
+import android.util.Log;
+
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 import com.emis.emismobile.knowledge.web.rest.ArticleRestRepository;
 
-
 public class ArticleVoteService {
-    private ArticleVoteLocalRepository voteRepository;
+    private static final String TAG = "ArticleVoteService";
+
+    private ArticleVoteLocalRepository localRepository;
     private ArticleRestRepository articleRestRepository;
 
-    public ArticleVoteService(ArticleVoteLocalRepository voteRepository,
+    public ArticleVoteService(ArticleVoteLocalRepository localRepository,
                               ArticleRestRepository articleRestRepository) {
-        this.voteRepository = voteRepository;
+        this.localRepository = localRepository;
         this.articleRestRepository = articleRestRepository;
     }
 
     public VoteType getVote(String articleId) {
-        return voteRepository.getVote(articleId);
+        return localRepository.getVote(articleId);
     }
 
+    /**
+     * Makes an upvote request to the backend. If the backend call succeeds,
+     * persists the vote to the local Android storage. If the article is already
+     * upvoted, removes the vote.
+     *
+     * @param articleId - the ID of the article to be upvoted
+     */
     public void upvote(String articleId) {
+        Vote vote;
         if (currentlyUpvoted(articleId)) {
-            // todo Vote(1, 0)
-            removeVote(articleId);
+            vote = new Vote(articleId, 1, 0);
         } else if (currentlyDownvoted(articleId)) {
-            // todo Vote(-1, 1)
-            voteRepository.addVote(VoteType.UPVOTE, articleId);
+            vote = new Vote(articleId, -1, 1);
         } else {
-            // todo Vote(0, 1)
+            vote = new Vote(articleId, 0, 1);
         }
+
+        postVoteAndPersistLocally(vote);
     }
 
+    /**
+     * Makes an downvote request to the backend. If the backend call succeeds,
+     * persists the vote to the local Android storage. If the article is already
+     * downvoted, removes the vote.
+     *
+     * @param articleId - the ID of the article to be downvoted
+     */
     public void downvote(String articleId) {
         Vote vote;
         if (currentlyDownvoted(articleId)) {
-            // todo Vote(-1, 0)
             vote = new Vote(articleId, -1, 0);
-            removeVote(articleId);
+        } else if (currentlyUpvoted(articleId)) {
+            vote = new Vote(articleId, 1, -1);
         } else {
-            if (currentlyUpvoted(articleId)) {
-                vote = new Vote(articleId, 1, -1);
-            }
             vote = new Vote(articleId, 0, -1);
+        }
 
-            articleRestRepository.postVote(vote);
+        postVoteAndPersistLocally(vote);
+    }
 
-            voteRepository.addVote(VoteType.DOWNVOTE, articleId);
+    private void postVoteAndPersistLocally(Vote vote) {
+        articleRestRepository.postVoteWithCallback(vote, new VoidCallback() {
+            @Override
+            public void onSuccess() {
+                logSuccess(vote);
+                persistLocally(vote);
+            }
+
+            @Override
+            public void onFailure() {
+                logError(vote);
+            }
+        });
+    }
+
+    private void persistLocally(Vote vote) {
+        switch (vote.getCurrent()) {
+            case 0:
+                localRepository.removeVote(vote.getArticleId());
+                break;
+            case 1:
+                localRepository.addVote(VoteType.UPVOTE, vote.getArticleId());
+                break;
+            case -1:
+                localRepository.addVote(VoteType.DOWNVOTE, vote.getArticleId());
+                break;
         }
     }
 
@@ -56,7 +98,7 @@ public class ArticleVoteService {
      * @return true if the article is upvoted, false if it's empty or downvoted
      */
     public boolean currentlyUpvoted(String articleId) {
-        return VoteType.UPVOTE.equals(voteRepository.getVote(articleId));
+        return VoteType.UPVOTE.equals(localRepository.getVote(articleId));
     }
 
     /**
@@ -66,12 +108,14 @@ public class ArticleVoteService {
      * @return true if the article is downvoted, false if it's empty or upvoted
      */
     public boolean currentlyDownvoted(String articleId) {
-        return VoteType.DOWNVOTE.equals(voteRepository.getVote(articleId));
+        return VoteType.DOWNVOTE.equals(localRepository.getVote(articleId));
     }
 
-    private void removeVote(String articleId) {
-        // todo make request to server
+    private static void logSuccess(Vote vote) {
+        Log.i(TAG, String.format("%s executed successfully.", vote));
+    }
 
-        voteRepository.removeVote(articleId);
+    private static void logError(Vote vote) {
+        Log.e(TAG, String.format("%s failed to execute.", vote));
     }
 }

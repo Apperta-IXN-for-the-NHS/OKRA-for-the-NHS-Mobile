@@ -46,7 +46,6 @@ public class KnowledgeFragment extends Fragment {
         setUpRecyclerView();
         setUpDynamicFetchOnScroll();
         setUpSearchBar();
-        query = "";
 
         fetchAndDisplayArticles(10, 0);
 

@@ -24,4 +24,13 @@ public class Vote {
     public int getCurrent() {
         return current;
     }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "articleId='" + articleId + '\'' +
+                ", previous=" + previous +
+                ", current=" + current +
+                '}';
+    }
 }

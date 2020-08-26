@@ -24,7 +24,7 @@ public interface EmisNowApiService {
 
     @Headers("Content-type: application/json")
     @POST("/articles/{id}/vote")
-    Call<String> postVote(@Path("id") String id, @Body Vote vote);
+    Call<Void> postVote(@Path("id") String id, @Body Vote vote);
 
     @GET("/cases")
     Call<List<Case>> getCases(@Query("query") String query, @Query("limit") int limit, @Query("start") int start);

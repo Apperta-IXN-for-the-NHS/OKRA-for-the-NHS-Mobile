@@ -1,7 +1,5 @@
 package com.emis.emismobile.knowledge;
 
-import android.telephony.TelephonyManager;
-
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository;
 import com.emis.emismobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 import com.emis.emismobile.knowledge.web.rest.ArticleRestRepository;
@@ -18,14 +16,12 @@ public class ArticleVoteServiceTest {
     private ArticleVoteService voteService;
     private ArticleVoteLocalRepository voteLocalRepository;
     private ArticleRestRepository restRepository;
-    private TelephonyManager telephonyManager;
 
     @Before
     public void setUp() {
         voteLocalRepository = mock(ArticleVoteLocalRepository.class);
         restRepository = mock(ArticleRestRepository.class);
-        telephonyManager = mock(TelephonyManager.class);
-        voteService = new ArticleVoteService(voteLocalRepository, restRepository, telephonyManager);
+        voteService = new ArticleVoteService(voteLocalRepository, restRepository);
     }
 
     @Test

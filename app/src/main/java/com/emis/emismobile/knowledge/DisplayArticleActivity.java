@@ -72,9 +72,9 @@ public class DisplayArticleActivity extends AppCompatActivity {
     private void wireVoteService() {
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),
                                                                    Context.MODE_PRIVATE);
-        ArticleVoteLocalRepository voteRepository = new ArticleVoteLocalRepository(sharedPreferences);
+        ArticleVoteLocalRepository localRepository = new ArticleVoteLocalRepository(sharedPreferences);
         ArticleRestRepository restRepository = ArticleRestRepository.getInstance();
-        voteService = new ArticleVoteService(voteRepository, restRepository);
+        voteService = new ArticleVoteService(localRepository, restRepository);
     }
 
     private void setupViewComponents() {

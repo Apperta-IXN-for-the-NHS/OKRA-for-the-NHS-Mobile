@@ -7,12 +7,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.emis.emismobile.EmisNowApiService;
+import com.emis.emismobile.knowledge.VoidCallback;
 import com.emis.emismobile.knowledge.Article;
 import com.emis.emismobile.knowledge.Vote;
 
 import java.util.List;
 
-import okhttp3.Request;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,7 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ArticleRestRepository {
 
     private final String API_BASE_URL = "http://162.62.53.126:4123";
-    private static final String TAG = "ArticleRestRepository";
 
     private static ArticleRestRepository instance = null;
     private EmisNowApiService webService;
@@ -32,9 +33,16 @@ public class ArticleRestRepository {
     }
 
     private void buildRetrofit() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient)
                 .build();
 
         webService = retrofit.create(EmisNowApiService.class);
@@ -55,23 +63,18 @@ public class ArticleRestRepository {
             @Override
             public void onResponse(@NonNull Call<Article> call,
                                    @NonNull Response<Article> response) {
-                logRequest(call.request());
-
                 if (!response.isSuccessful()) {
-                    logError(response);
-
                     return;
                 }
-                logResponse(response);
-
                 article.setValue(response.body());
             }
 
             @Override
             public void onFailure(@NonNull Call<Article> call,
                                   @NonNull Throwable t) {
-                // todo
-                System.err.println(t.getMessage());
+                Log.i("fetchArticleById", call.request().toString());
+                Log.e("fetchArticleById", t.getMessage());
+
             }
         });
 
@@ -85,69 +88,45 @@ public class ArticleRestRepository {
             @Override
             public void onResponse(@NonNull Call<List<Article>> call,
                                    @NonNull Response<List<Article>> response) {
-                logRequest(call.request());
 
                 if (!response.isSuccessful()) {
-                    logError(response);
-
                     return;
                 }
-                logResponse(response);
-
                 articles.setValue(response.body());
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Article>> call,
                                   @NonNull Throwable t) {
-                // todo
-                System.err.println(t.getMessage());
+                Log.i("fetchArticles", call.request().toString());
+                Log.e("fetchArticles", t.getMessage());
             }
         });
 
         return articles;
     }
 
-    public LiveData<String> postVote(Vote vote) {
-        MutableLiveData<String> data = new MutableLiveData<>();
+    public void postVoteWithCallback(Vote vote, VoidCallback voteCallback) {
 
-        webService.postVote(vote.getArticleId(), vote).enqueue(new Callback<String>() {
+        webService.postVote(vote.getArticleId(), vote).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(@NonNull Call<String> call,
-                                   @NonNull Response<String> response) {
-                logRequest(call.request());
+            public void onResponse(@NonNull Call<Void> call,
+                                   @NonNull Response<Void> response) {
 
                 if (!response.isSuccessful()) {
-                    logError(response);
-
+                    voteCallback.onFailure();
                     return;
                 }
-                logResponse(response);
-
-                data.setValue(response.body());
+                voteCallback.onSuccess();
             }
 
             @Override
-            public void onFailure(@NonNull Call<String> call,
+            public void onFailure(@NonNull Call<Void> call,
                                   @NonNull Throwable t) {
-                // todo
-                data.setValue(null);
-                System.err.println(t.getMessage());
+                Log.i("postVoteWithCallback", call.request().toString());
+                Log.e("postVoteWithCallback", t.getMessage());
             }
         });
-
-        return data;
     }
 
-    private static void logRequest(Request request) {
-        Log.i(TAG, String.format("Making a request: %s", request.toString()));
-    }
-
-    private static void logResponse(Response response) {
-        Log.i(TAG, String.format("Response: code %d: %s", response.code(), response.message()));
-    }
-
-    private static void logError(Response response) {
-        Log.e(TAG, String.format("Error: code %d: %s", response.code(), response.message()));
-    }
 }
