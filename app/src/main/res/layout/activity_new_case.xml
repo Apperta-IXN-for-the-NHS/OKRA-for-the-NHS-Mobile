@@ -63,19 +63,11 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/open_case_button"
+                android:id="@+id/submit_case_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Open Case"
+                android:text="Submit Case"
                 android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/error_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:visibility="gone"
-                android:textColor="@android:color/black"/>
 
         </android.widget.LinearLayout>
     </ScrollView>

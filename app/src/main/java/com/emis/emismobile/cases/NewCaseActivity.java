@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class NewCaseActivity extends AppCompatActivity {
 
     private CasesViewModel viewModel;
-    private Button openCaseButton;
+    private Button submitCaseButton;
     private TextInputLayout titleField;
     private TextInputLayout bodyField;
     private TextInputLayout priorityField;
@@ -33,18 +33,18 @@ public class NewCaseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         setContentView(R.layout.activity_new_case);
-        setTitle("Open a New Case");
+        setTitle("Submit a New Case");
         setUpPrioritiesMenu();
 
         titleField = this.findViewById(R.id.title_field);
         bodyField = this.findViewById(R.id.body_field);
         priorityField = this.findViewById(R.id.priorities_field);
 
-        openCaseButton = this.findViewById(R.id.open_case_button);
-        openCaseButton.setOnClickListener(new View.OnClickListener() {
+        submitCaseButton = this.findViewById(R.id.submit_case_button);
+        submitCaseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCase();
+                submitCase();
             }
         });
 
@@ -61,7 +61,7 @@ public class NewCaseActivity extends AppCompatActivity {
         dropdown.setText("Critical", false);
     }
 
-    public void openCase(){
+    public void submitCase(){
         String title = titleField.getEditText().getText().toString().trim();
         String body = bodyField.getEditText().getText().toString().trim();
         String priority = priorityField.getEditText().getText().toString().trim();
@@ -111,7 +111,7 @@ public class NewCaseActivity extends AppCompatActivity {
     public void buildCreateSuccessDialog(){
         createSuccessDialog = new AlertDialog.Builder(this);
         createSuccessDialog.setTitle("Dialog");
-        createSuccessDialog.setMessage("Successfully opened case.");
+        createSuccessDialog.setMessage("Successfully submitted case.");
         createSuccessDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 onBackPressed();
@@ -122,7 +122,7 @@ public class NewCaseActivity extends AppCompatActivity {
     public void buildCreateFailureDialog(){
         createFailureDialog = new AlertDialog.Builder(this);
         createFailureDialog.setTitle("Dialog");
-        createFailureDialog.setMessage("Failed to open case. Please check your internet connection and try again.");
+        createFailureDialog.setMessage("Failed to submit case. Please check your internet connection and try again.");
         createFailureDialog.setPositiveButton("OK", null);
     }
 }

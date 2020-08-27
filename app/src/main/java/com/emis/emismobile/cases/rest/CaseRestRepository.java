@@ -110,9 +110,7 @@ public class CaseRestRepository {
     public MutableLiveData<Boolean> createCase(Case newCase) {
         final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>();
 
-        Call<Void> call = webService.createCase(newCase);
-        call.enqueue(new Callback<Void>(){
-
+        webService.createCase(newCase).enqueue(new Callback<Void>(){
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful()){
