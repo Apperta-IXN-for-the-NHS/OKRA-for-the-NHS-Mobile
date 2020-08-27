@@ -38,7 +38,7 @@ public class ArticleVoteServiceTest {
         String articleId = "some_id";
         when(voteLocalRepository.getVote(articleId)).thenReturn(VoteType.UPVOTE);
 
-        assertTrue(voteService.alreadyUpvoted(articleId));
+        assertTrue(voteService.currentlyUpvoted(articleId));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class ArticleVoteServiceTest {
         String articleId = "some_id";
         when(voteLocalRepository.getVote(articleId)).thenReturn(VoteType.DOWNVOTE);
 
-        assertTrue(voteService.alreadyDownvoted(articleId));
+        assertTrue(voteService.currentlyDownvoted(articleId));
     }
 
 }
