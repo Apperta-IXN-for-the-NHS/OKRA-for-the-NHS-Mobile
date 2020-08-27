@@ -53,6 +53,12 @@ public class NewCaseActivity extends AppCompatActivity {
         buildCreateFailureDialog();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
     public void setUpPrioritiesMenu() {
         String[] priorityOptions = new String[]{"Critical", "High", "Moderate", "Low"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, priorityOptions);
