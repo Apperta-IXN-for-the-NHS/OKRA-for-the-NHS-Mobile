@@ -18,7 +18,6 @@ public class DisplayCaseActivity extends AppCompatActivity {
     private TextView dateTextView;
     private TextView titleTextView;
     private TextView priorityTextView;
-    private ScrollView scrollView;
 
     private CasesViewModel viewModel;
 
@@ -40,7 +39,6 @@ public class DisplayCaseActivity extends AppCompatActivity {
         dateTextView = this.findViewById(R.id.case_date);
         titleTextView = this.findViewById(R.id.case_title);
         priorityTextView = this.findViewById(R.id.case_priority);
-        scrollView = this.findViewById(R.id.case_scrollview);
     }
 
     private void fetchSelectedCase() {
@@ -50,7 +48,7 @@ public class DisplayCaseActivity extends AppCompatActivity {
     private void displaySelectedCase(Case c) {
         if (c != null && c.getBody() != null && !c.getBody().isEmpty()) {
             bodyTextView.setText(Html.fromHtml(c.getBody()));
-            dateTextView.setText("Opened: "+c.getDate());
+            dateTextView.setText("Date submitted: "+c.getDate());
             titleTextView.setText(c.getTitle());
             priorityTextView.setText("Priority: "+c.getPriority());
             setTitle("Case");

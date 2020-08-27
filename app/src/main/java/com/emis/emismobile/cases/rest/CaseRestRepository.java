@@ -107,6 +107,27 @@ public class CaseRestRepository {
         return cases;
     }
 
+    public MutableLiveData<Boolean> createCase(Case newCase) {
+        final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>();
+
+        webService.createCase(newCase).enqueue(new Callback<Void>(){
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(!response.isSuccessful()){
+                    isSuccess.setValue(false);
+                    return;
+                }
+                isSuccess.setValue(true);
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                isSuccess.setValue(false);
+            }
+        });
+        return isSuccess;
+    }
+
     private static void logRequest(Request request) {
         Log.i(TAG, String.format("Making a request: %s", request.toString()));
     }
