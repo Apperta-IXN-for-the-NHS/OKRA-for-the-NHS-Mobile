@@ -7,6 +7,12 @@ public class Case {
     private int priority;
     private String body;
 
+    public Case(String title, int priority, String body) {
+        this.title = title;
+        this.priority = priority;
+        this.body = body;
+    }
+
     public String getId() {
         return id;
     }

@@ -40,7 +40,7 @@ public class CasesAdapter extends RecyclerView.Adapter<CasesAdapter.ViewHolder> 
         TextView titleTextView = holder.titleTextView;
         titleTextView.setText(c.getTitle());
         TextView dateTextView = holder.dateTextView;
-        dateTextView.setText("Opened: "+c.getDate());
+        dateTextView.setText("Date Submitted: "+c.getDate());
         TextView priorityTextView = holder.priorityTextView;
         priorityTextView.setText("Priority: "+c.getPriority());
     }
