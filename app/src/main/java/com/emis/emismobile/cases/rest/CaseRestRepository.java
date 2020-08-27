@@ -6,7 +6,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.emis.emismobile.App;
 import com.emis.emismobile.EmisNowApiService;
+import com.emis.emismobile.R;
 import com.emis.emismobile.cases.Case;
 
 import java.util.List;
@@ -21,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CaseRestRepository {
 
-    private final String API_BASE_URL = "http://162.62.53.126:4123";
+    private final String API_BASE_URL = App.getContext().getString(R.string.backendUrl);
 
     private static CaseRestRepository instance = null;
     private EmisNowApiService webService;

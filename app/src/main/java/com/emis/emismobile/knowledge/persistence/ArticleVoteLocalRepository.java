@@ -29,6 +29,12 @@ public class ArticleVoteLocalRepository {
         return VoteType.valueOf(voteType);
     }
 
+    /**
+     * Saves the vote type for the specified article ID. Updates any existing previous entry for the articleId.
+     *
+     * @param voteType UPVOTE or DOWNVOTE
+     * @param articleId the ID of the article that is to be added or updates
+     */
     public void addVote(VoteType voteType, String articleId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -36,6 +42,9 @@ public class ArticleVoteLocalRepository {
         editor.apply();
     }
 
+    /**
+     * Removes the vote for the article ID from the local data store.
+     */
     public void removeVote(String articleId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
