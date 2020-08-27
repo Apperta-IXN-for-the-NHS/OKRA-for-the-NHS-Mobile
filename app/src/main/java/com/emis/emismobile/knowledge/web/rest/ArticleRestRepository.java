@@ -74,7 +74,6 @@ public class ArticleRestRepository {
                                   @NonNull Throwable t) {
                 Log.i("fetchArticleById", call.request().toString());
                 Log.e("fetchArticleById", t.getMessage());
-
             }
         });
 

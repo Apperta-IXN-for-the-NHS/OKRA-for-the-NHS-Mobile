@@ -11,7 +11,9 @@ import com.emis.emismobile.cases.Case;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,7 +23,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class CaseRestRepository {
 
     private final String API_BASE_URL = "http://162.62.53.126:4123";
-    private static final String TAG = "CaseRestRepository";
 
     private static CaseRestRepository instance = null;
     private EmisNowApiService webService;
@@ -31,9 +32,16 @@ public class CaseRestRepository {
     }
 
     private void buildRetrofit() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient httpClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(httpClient)
                 .build();
 
         webService = retrofit.create(EmisNowApiService.class);
@@ -54,14 +62,9 @@ public class CaseRestRepository {
             @Override
             public void onResponse(@NonNull Call<Case> call,
                                    @NonNull Response<Case> response) {
-                logRequest(call.request());
-
                 if (!response.isSuccessful()) {
-                    logError(response);
-
                     return;
                 }
-                logResponse(response);
 
                 c.setValue(response.body());
             }
@@ -69,8 +72,8 @@ public class CaseRestRepository {
             @Override
             public void onFailure(@NonNull Call<Case> call,
                                   @NonNull Throwable t) {
-                // todo
-                System.err.println(t.getMessage());
+                Log.i("fetchCaseById", call.request().toString());
+                Log.e("fetchCaseById", t.getMessage());
             }
         });
 
@@ -84,14 +87,9 @@ public class CaseRestRepository {
             @Override
             public void onResponse(@NonNull Call<List<Case>> call,
                                    @NonNull Response<List<Case>> response) {
-                logRequest(call.request());
-
                 if (!response.isSuccessful()) {
-                    logError(response);
-
                     return;
                 }
-                logResponse(response);
 
                 cases.setValue(response.body());
             }
@@ -99,8 +97,8 @@ public class CaseRestRepository {
             @Override
             public void onFailure(@NonNull Call<List<Case>> call,
                                   @NonNull Throwable t) {
-                // todo
-                System.err.println(t.getMessage());
+                Log.i("fetchCases", call.request().toString());
+                Log.e("fetchCases", t.getMessage());
             }
         });
 
@@ -110,10 +108,10 @@ public class CaseRestRepository {
     public MutableLiveData<Boolean> createCase(Case newCase) {
         final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>();
 
-        webService.createCase(newCase).enqueue(new Callback<Void>(){
+        webService.createCase(newCase).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                if(!response.isSuccessful()){
+                if (!response.isSuccessful()) {
                     isSuccess.setValue(false);
                     return;
                 }
@@ -123,20 +121,11 @@ public class CaseRestRepository {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 isSuccess.setValue(false);
+                Log.i("createCase", call.request().toString());
+                Log.e("createCase", t.getMessage());
             }
         });
         return isSuccess;
     }
 
-    private static void logRequest(Request request) {
-        Log.i(TAG, String.format("Making a request: %s", request.toString()));
-    }
-
-    private static void logResponse(Response response) {
-        Log.i(TAG, String.format("Response: code %d: %s", response.code(), response.message()));
-    }
-
-    private static void logError(Response response) {
-        Log.e(TAG, String.format("Error: code %d: %s", response.code(), response.message()));
-    }
 }
