@@ -44,12 +44,17 @@ public class Case {
     }
 
     public String getPriority() {
-        switch (priority){
-            case 1: return "Critical";
-            case 2: return "High";
-            case 3: return "Moderate";
-            case 4: return "Low";
-            default: return "Low";
+        switch (priority) {
+            case 1:
+                return "Critical";
+            case 2:
+                return "High";
+            case 3:
+                return "Moderate";
+            case 4:
+                return "Low";
+            default:
+                return "Low";
         }
     }
 

@@ -14,6 +14,10 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ * The client service calling the RESTful endpoints on the backend. This interface only specifies the methods
+ * and API, while Retrofit injects the actual implementation executing the HTTP requests.
+ */
 public interface EmisNowApiService {
 
     @GET("/articles")

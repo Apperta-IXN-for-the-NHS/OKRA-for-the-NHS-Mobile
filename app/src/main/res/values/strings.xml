@@ -9,4 +9,5 @@
     <string name="upvoteButtonTextPressed">Liked</string>
     <string name="downvoteButtonText">Dislike</string>
     <string name="downvoteButtonTextPressed">Disliked</string>
+    <string name="backendUrl">http://162.62.53.126:4123</string>
 </resources>

@@ -73,6 +73,7 @@
                 android:textSize="18sp" />
         </android.widget.LinearLayout>
     </ScrollView>
+
     <LinearLayout
         android:id="@+id/buttons_layout"
         android:layout_width="match_parent"
@@ -94,8 +95,7 @@
             app:icon="@drawable/ic_thumb_up_border_24px"
             app:iconGravity="end"
             app:iconTint="@android:color/black"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         <Button
             android:id="@+id/downvote_button"
@@ -108,8 +108,7 @@
             app:icon="@drawable/ic_thumb_down_border_24px"
             app:iconGravity="end"
             app:iconTint="@android:color/black"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            />
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
     </LinearLayout>
 </RelativeLayout>
 

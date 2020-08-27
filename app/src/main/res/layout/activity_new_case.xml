@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/case_scrollview"
@@ -21,10 +19,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/title_field"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Title"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:paddingBottom="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -35,10 +33,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/body_field"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Body"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:paddingBottom="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -47,8 +45,9 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/priorities_field"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp">
@@ -57,8 +56,7 @@
                     android:id="@+id/priorities_dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    />
+                    android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit Case"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
         </android.widget.LinearLayout>
     </ScrollView>

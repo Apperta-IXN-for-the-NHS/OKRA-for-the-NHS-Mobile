@@ -53,62 +53,73 @@ public class NewCaseActivity extends AppCompatActivity {
         buildCreateFailureDialog();
     }
 
-    public void setUpPrioritiesMenu(){
-        String[] priorityOptions = new String[] {"Critical", "High", "Moderate", "Low"};
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public void setUpPrioritiesMenu() {
+        String[] priorityOptions = new String[]{"Critical", "High", "Moderate", "Low"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.dropdown_menu_popup_item, priorityOptions);
         AutoCompleteTextView dropdown = this.findViewById(R.id.priorities_dropdown);
         dropdown.setAdapter(adapter);
         dropdown.setText("Critical", false);
     }
 
-    public void submitCase(){
+    public void submitCase() {
         String title = titleField.getEditText().getText().toString().trim();
         String body = bodyField.getEditText().getText().toString().trim();
         String priority = priorityField.getEditText().getText().toString().trim();
 
-        if(formIsValid(title, body, priority)){
+        if (formIsValid(title, body, priority)) {
             int p = 0;
-            switch (priority){
-                case "Critical":{p=1;break;}
-                case "High":{p=2;break;}
-                case "Moderate":{p=3;break;}
-                case "Low":{p=4;break;}
+            switch (priority) {
+                case "Critical":
+                    p = 1;
+                    break;
+                case "High":
+                    p = 2;
+                    break;
+                case "Moderate":
+                    p = 3;
+                    break;
+                case "Low":
+                    p = 4;
+                    break;
             }
-            createCase(title,body,p);
+            createCase(title, body, p);
 
-        }else{
+        } else {
             emptyFieldsDialog.show();
         }
     }
 
-    public boolean formIsValid(String title, String body, String priority){
-        if(!title.isEmpty() && !title.equals(null) && !body.isEmpty() && !body.equals(null) && !priority.isEmpty() && !priority.equals(null)){
-            return true;
-        }
-        return false;
+    public boolean formIsValid(String title, String body, String priority) {
+        return !title.isEmpty() && !body.isEmpty() && !priority.isEmpty();
     }
 
-    public void createCase(String title, String body, int priority){
-        Case newCase = new Case(title,priority,body);
+    public void createCase(String title, String body, int priority) {
+        Case newCase = new Case(title, priority, body);
         viewModel.createCase(newCase).observe(this, this::showDialog);
     }
 
     private void showDialog(Boolean isSuccess) {
-        if(isSuccess){
+        if (isSuccess) {
             createSuccessDialog.show();
-        }else{
+        } else {
             createFailureDialog.show();
         }
     }
 
-    public void buildEmptyFieldsDialog(){
+    public void buildEmptyFieldsDialog() {
         emptyFieldsDialog = new AlertDialog.Builder(this);
         emptyFieldsDialog.setTitle("Dialog");
         emptyFieldsDialog.setMessage("Please input all fields.");
         emptyFieldsDialog.setPositiveButton("OK", null);
     }
 
-    public void buildCreateSuccessDialog(){
+    public void buildCreateSuccessDialog() {
         createSuccessDialog = new AlertDialog.Builder(this);
         createSuccessDialog.setTitle("Dialog");
         createSuccessDialog.setMessage("Successfully submitted case.");
@@ -119,7 +130,7 @@ public class NewCaseActivity extends AppCompatActivity {
         });
     }
 
-    public void buildCreateFailureDialog(){
+    public void buildCreateFailureDialog() {
         createFailureDialog = new AlertDialog.Builder(this);
         createFailureDialog.setTitle("Dialog");
         createFailureDialog.setMessage("Failed to submit case. Please check your internet connection and try again.");
