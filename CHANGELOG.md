@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - show article score and views
 
+## [0.17.0] - 2020-08-26
+
+### Added
+- Create case functionality
+
 ## [0.16.0] - 2020-08-25
 
 ### Added

@@ -6,7 +6,10 @@ import com.emis.emismobile.knowledge.Article;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -23,4 +26,7 @@ public interface EmisNowApiService {
 
     @GET("/cases/{id}")
     Call<Case> getCase(@Path("id") String id);
+
+    @POST("/cases")
+    Call<Void> createCase(@Body Case c);
 }
