@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -40,6 +41,8 @@ public class DisplayArticleActivity extends AppCompatActivity {
     private TextView authorTextView;
     private TextView dateTextView;
     private TextView titleTextView;
+    private TextView viewsTextView;
+    private TextView scoreTextView;
     private LinearLayout buttonsLayout;
     private LinearLayout articleLayout;
     private ScrollView scrollView;
@@ -82,6 +85,8 @@ public class DisplayArticleActivity extends AppCompatActivity {
         authorTextView = this.findViewById(R.id.article_author);
         dateTextView = this.findViewById(R.id.article_date);
         titleTextView = this.findViewById(R.id.article_title);
+        viewsTextView = this.findViewById(R.id.article_views);
+        scoreTextView = this.findViewById(R.id.article_score);
         upvoteButton = this.findViewById(R.id.upvote_button);
         downvoteButton = this.findViewById(R.id.downvote_button);
         buttonsLayout = this.findViewById(R.id.buttons_layout);
@@ -162,6 +167,8 @@ public class DisplayArticleActivity extends AppCompatActivity {
             authorTextView.setText(article.getAuthor());
             dateTextView.setText(article.getDate());
             titleTextView.setText(article.getTitle());
+            viewsTextView.setText("Views: " + Integer.toString(article.getViews()));
+            scoreTextView.setText("Net Score: " + Integer.toString(article.getScore()));
             setTitle("Article");
             listRelatedArticles(article);
         } else {
@@ -191,6 +198,16 @@ public class DisplayArticleActivity extends AppCompatActivity {
             articleTitleTV.setText(relatedArticle.getTitle());
             TextView articleDateTV = knowledgeView.findViewById(R.id.article_date);
             articleDateTV.setText(relatedArticle.getDate());
+
+            ImageView viewsIcon = knowledgeView.findViewById(R.id.article_views_icon);
+            viewsIcon.setImageResource(R.drawable.ic_visibility_black_24dp);
+            ImageView scoreIcon = knowledgeView.findViewById(R.id.article_score_icon);
+            scoreIcon.setImageResource(R.drawable.ic_plus_minus_variant);
+
+            TextView articleViewsTV = knowledgeView.findViewById(R.id.article_views);
+            articleViewsTV.setText(Integer.toString(relatedArticle.getViews()));
+            TextView articleScoreTV = knowledgeView.findViewById(R.id.article_score);
+            articleScoreTV.setText(Integer.toString(relatedArticle.getScore()));
 
             knowledgeView.setOnClickListener(v -> openRelatedArticle(knowledgeView));
 

@@ -10,11 +10,16 @@ public class Article {
     private String author;
     private String title;
     private String body;
-    private List<Article> related = new ArrayList<>();
 
+    @SerializedName("net_votes")
+    private double score;
+
+    @SerializedName("view_count")
+    private int views;
 
     @SerializedName("created")
     private String date;
+    private List<Article> related = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -68,6 +73,22 @@ public class Article {
 
     public void setRelated(List<Article> related) {
         this.related = related;
+    }
+
+    public int getScore() {
+        return (int) score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public void setViews(int views) {
+        this.views = views;
     }
 }
 
