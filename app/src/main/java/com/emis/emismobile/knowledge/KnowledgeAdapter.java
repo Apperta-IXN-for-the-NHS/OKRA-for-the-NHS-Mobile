@@ -41,6 +41,10 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.View
         titleTextView.setText(article.getTitle());
         TextView dateTextView = holder.dateTextView;
         dateTextView.setText(article.getDate());
+        TextView viewsTextView = holder.viewsTextView;
+        viewsTextView.setText(Integer.toString(article.getViews()));
+        TextView scoreTextView = holder.scoreTextView;
+        scoreTextView.setText(Integer.toString(article.getScore()));
     }
 
     @Override
@@ -52,11 +56,15 @@ public class KnowledgeAdapter extends RecyclerView.Adapter<KnowledgeAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView titleTextView;
         public TextView dateTextView;
+        public TextView viewsTextView;
+        public TextView scoreTextView;
 
         public ViewHolder(final View itemView) {
             super(itemView);
             titleTextView = (TextView) itemView.findViewById(R.id.article_title);
             dateTextView = (TextView) itemView.findViewById(R.id.article_date);
+            viewsTextView = (TextView) itemView.findViewById(R.id.article_views);
+            scoreTextView = (TextView) itemView.findViewById(R.id.article_score);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
