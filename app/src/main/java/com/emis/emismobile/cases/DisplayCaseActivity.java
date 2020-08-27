@@ -3,7 +3,6 @@ package com.emis.emismobile.cases;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,9 +47,9 @@ public class DisplayCaseActivity extends AppCompatActivity {
     private void displaySelectedCase(Case c) {
         if (c != null && c.getBody() != null && !c.getBody().isEmpty()) {
             bodyTextView.setText(Html.fromHtml(c.getBody()));
-            dateTextView.setText("Date submitted: "+c.getDate());
+            dateTextView.setText("Date submitted: " + c.getDate());
             titleTextView.setText(c.getTitle());
-            priorityTextView.setText("Priority: "+c.getPriority());
+            priorityTextView.setText("Priority: " + c.getPriority());
             setTitle("Case");
         } else {
             titleTextView.setText("This case is empty.");

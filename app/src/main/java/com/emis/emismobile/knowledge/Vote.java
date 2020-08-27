@@ -5,7 +5,8 @@ public class Vote {
     private int previous;
     private int current;
 
-    public Vote() {}
+    public Vote() {
+    }
 
     public Vote(String articleId, int previous, int current) {
         this.articleId = articleId;

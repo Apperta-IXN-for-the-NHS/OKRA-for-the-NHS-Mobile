@@ -12,7 +12,6 @@ import com.emis.emismobile.cases.Case;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;

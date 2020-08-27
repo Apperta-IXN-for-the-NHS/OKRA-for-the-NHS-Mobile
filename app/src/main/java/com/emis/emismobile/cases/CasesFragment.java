@@ -46,12 +46,7 @@ public class CasesFragment extends Fragment {
         searchLayout = root.findViewById(R.id.search_layout);
         newCaseButton = root.findViewById(R.id.new_case_button);
 
-        newCaseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                submitCaseForm();
-            }
-        });
+        newCaseButton.setOnClickListener(view -> submitCaseForm());
 
         setUpRecyclerView();
         setUpDynamicFetchOnScroll();
@@ -63,7 +58,7 @@ public class CasesFragment extends Fragment {
         return root;
     }
 
-    private void submitCaseForm(){
+    private void submitCaseForm() {
         Intent intent = new Intent(this.getContext(), NewCaseActivity.class);
         this.getContext().startActivity(intent);
     }

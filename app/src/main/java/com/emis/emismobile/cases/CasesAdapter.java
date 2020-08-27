@@ -40,9 +40,9 @@ public class CasesAdapter extends RecyclerView.Adapter<CasesAdapter.ViewHolder> 
         TextView titleTextView = holder.titleTextView;
         titleTextView.setText(c.getTitle());
         TextView dateTextView = holder.dateTextView;
-        dateTextView.setText("Date Submitted: "+c.getDate());
+        dateTextView.setText("Date Submitted: " + c.getDate());
         TextView priorityTextView = holder.priorityTextView;
-        priorityTextView.setText("Priority: "+c.getPriority());
+        priorityTextView.setText("Priority: " + c.getPriority());
     }
 
     @Override
@@ -62,12 +62,7 @@ public class CasesAdapter extends RecyclerView.Adapter<CasesAdapter.ViewHolder> 
             dateTextView = (TextView) itemView.findViewById(R.id.case_date);
             priorityTextView = (TextView) itemView.findViewById(R.id.case_priority);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    itemOnClick();
-                }
-            });
+            itemView.setOnClickListener(v -> itemOnClick());
         }
 
         public void itemOnClick() {
