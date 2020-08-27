@@ -125,4 +125,10 @@ public class NewCaseActivity extends AppCompatActivity {
         createFailureDialog.setMessage("Failed to submit case. Please check your internet connection and try again.");
         createFailureDialog.setPositiveButton("OK", null);
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
