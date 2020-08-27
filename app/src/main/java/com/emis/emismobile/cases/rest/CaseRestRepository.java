@@ -109,7 +109,8 @@ public class CaseRestRepository {
 
         webService.createCase(newCase).enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call,
+                                   @NonNull Response<Void> response) {
                 if (!response.isSuccessful()) {
                     isSuccess.setValue(false);
                     return;
@@ -118,7 +119,8 @@ public class CaseRestRepository {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call,
+                                  @NonNull Throwable t) {
                 isSuccess.setValue(false);
                 Log.i("createCase", call.request().toString());
                 Log.e("createCase", t.getMessage());

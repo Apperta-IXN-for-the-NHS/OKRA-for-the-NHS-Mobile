@@ -90,10 +90,7 @@ public class NewCaseActivity extends AppCompatActivity {
     }
 
     public boolean formIsValid(String title, String body, String priority) {
-        if (!title.isEmpty() && !title.equals(null) && !body.isEmpty() && !body.equals(null) && !priority.isEmpty() && !priority.equals(null)) {
-            return true;
-        }
-        return false;
+        return !title.isEmpty() && !body.isEmpty() && !priority.isEmpty();
     }
 
     public void createCase(String title, String body, int priority) {
