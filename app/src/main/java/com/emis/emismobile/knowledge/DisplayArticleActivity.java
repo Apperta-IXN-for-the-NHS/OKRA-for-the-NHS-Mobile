@@ -85,8 +85,6 @@ public class DisplayArticleActivity extends AppCompatActivity {
         authorTextView = this.findViewById(R.id.article_author);
         dateTextView = this.findViewById(R.id.article_date);
         titleTextView = this.findViewById(R.id.article_title);
-        viewsTextView = this.findViewById(R.id.article_views);
-        scoreTextView = this.findViewById(R.id.article_score);
         upvoteButton = this.findViewById(R.id.upvote_button);
         downvoteButton = this.findViewById(R.id.downvote_button);
         buttonsLayout = this.findViewById(R.id.buttons_layout);
@@ -167,8 +165,6 @@ public class DisplayArticleActivity extends AppCompatActivity {
             authorTextView.setText(article.getAuthor());
             dateTextView.setText(article.getDate());
             titleTextView.setText(article.getTitle());
-            viewsTextView.setText("Views: " + Integer.toString(article.getViews()));
-            scoreTextView.setText("Net Score: " + Integer.toString(article.getScore()));
             setTitle("Article");
             listRelatedArticles(article);
         } else {
