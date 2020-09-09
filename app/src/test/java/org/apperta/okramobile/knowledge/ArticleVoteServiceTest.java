@@ -3,7 +3,6 @@ package org.apperta.okramobile.knowledge;
 import org.apperta.okramobile.knowledge.persistence.ArticleVoteLocalRepository;
 import org.apperta.okramobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
 import org.apperta.okramobile.knowledge.web.rest.ArticleRestRepository;
-
 import org.junit.Before;
 import org.junit.Test;
 

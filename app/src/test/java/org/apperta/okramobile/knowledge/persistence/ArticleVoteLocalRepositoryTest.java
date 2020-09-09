@@ -3,12 +3,11 @@ package org.apperta.okramobile.knowledge.persistence;
 import android.content.SharedPreferences;
 
 import org.apperta.okramobile.knowledge.persistence.ArticleVoteLocalRepository.VoteType;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

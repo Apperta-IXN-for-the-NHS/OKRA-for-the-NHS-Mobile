@@ -150,11 +150,11 @@ public class DisplayArticleActivity extends AppCompatActivity {
         button.setText(text);
     }
 
-    private void fetchSelectedArticle(){
+    private void fetchSelectedArticle() {
         viewModel.getArticleById(displayedArticleId).observe(this, this::displaySelectedArticle);
     }
 
-    private void displaySelectedArticle(Article article){
+    private void displaySelectedArticle(Article article) {
         if (article != null && article.getBody() != null && !article.getBody().isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 bodyTextView.setText(Html.fromHtml(article.getBody(), Html.FROM_HTML_MODE_COMPACT));

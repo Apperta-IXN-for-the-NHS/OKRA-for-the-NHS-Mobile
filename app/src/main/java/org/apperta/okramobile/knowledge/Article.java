@@ -45,8 +45,8 @@ public class Article {
         this.title = title;
     }
 
-    public String getBody(){
-        body = body.replaceAll("�","");
+    public String getBody() {
+        body = body.replaceAll("�", "");
         return body;
     }
 
