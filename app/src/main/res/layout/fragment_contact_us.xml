@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context=".contact.ContactUsFragment">
+    tools:context="org.apperta.okramobile.contact.ContactUsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,28 +54,28 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:text="Fulford Grange"
+                            android:text="@string/address_line_1"
                             android:textAppearance="?attr/textAppearanceBody1" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:text="Micklefield Lane, Rawdon"
+                            android:text="@string/address_line_2"
                             android:textAppearance="?attr/textAppearanceBody1" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:text="Leeds"
+                            android:text="@string/address_city"
                             android:textAppearance="?attr/textAppearanceBody1" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:text="LS19 6BA"
+                            android:text="@string/address_postcode"
                             android:textAppearance="?attr/textAppearanceBody1" />
                     </LinearLayout>
 
@@ -103,7 +103,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start"
-                            android:text="Tel: 0330 024 1269"
+                            android:text="@string/supportContactNumber"
                             android:textAppearance="?attr/textAppearanceBody1" />
 
                     </LinearLayout>

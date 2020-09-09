@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#48B8E7</color>
-    <color name="colorPrimaryDark">#006EB6</color>
-    <color name="colorAccent">#7A9A01</color>
+    <color name="colorPrimary">#48B8E9</color>
+    <color name="colorPrimaryDark">#006EB8</color>
+    <color name="colorAccent">#7A9A03</color>
     <color name="upvoteGreen">#75E81D</color>
     <color name="downvoteRed">#D93838</color>
     <color name="drawable_bg">#7b393a3f</color>
