@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import org.apperta.okramobile.R;
 import com.google.android.material.card.MaterialCardView;
+
+import org.apperta.okramobile.R;
 
 public class ContactUsFragment extends Fragment {
 

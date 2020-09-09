@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.view.LayoutInflater;
 
-import org.apperta.okramobile.R;
-
 public class LoadingDialog {
     private AlertDialog dialog;
 

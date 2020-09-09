@@ -12,8 +12,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.apperta.okramobile.R;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.apperta.okramobile.R;
 
 public class NewCaseActivity extends AppCompatActivity {
 

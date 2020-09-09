@@ -17,8 +17,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.apperta.okramobile.R;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.apperta.okramobile.R;
 
 import java.util.ArrayList;
 import java.util.List;

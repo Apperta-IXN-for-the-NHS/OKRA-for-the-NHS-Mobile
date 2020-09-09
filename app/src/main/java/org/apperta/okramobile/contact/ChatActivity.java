@@ -5,10 +5,9 @@ import android.webkit.WebView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.apperta.okramobile.R;
-
 import org.apperta.okramobile.LoadingDialog;
 import org.apperta.okramobile.LoadingWebClient;
+import org.apperta.okramobile.R;
 
 public class ChatActivity extends AppCompatActivity {
 
