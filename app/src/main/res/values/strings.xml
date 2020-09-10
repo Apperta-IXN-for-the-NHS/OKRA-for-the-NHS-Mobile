@@ -1,13 +1,19 @@
 <resources>
-    <string name="app_name">EMIS Mobile</string>
-    <string name="supportContactNumber">tel:07725444555</string>
+    <string name="app_name">OKRA Mobile</string>
+    <string name="address_line_1">Address Line 1</string>
+    <string name="address_line_2">Address Line 2</string>
+    <string name="address_city">London</string>
+    <string name="address_postcode">W1 2NP</string>
+    <string name="supportContactNumber">tel: 000000000000</string>
     <string name="title_cases">Support Cases</string>
     <string name="title_knowledge">Knowledge Base</string>
     <string name="title_contact_us">Contact us</string>
-    <string name="preference_file_key">com.emis.emismobile.PREFERENCE_FILE_KEY</string>
+    <string name="preference_file_key">org.apperta.okramobile.PREFERENCE_FILE_KEY</string>
     <string name="upvoteButtonText">Like</string>
     <string name="upvoteButtonTextPressed">Liked</string>
     <string name="downvoteButtonText">Dislike</string>
     <string name="downvoteButtonTextPressed">Disliked</string>
-    <string name="backendUrl">http://162.62.53.126:4123</string>
+<!-- Change these URLs accordingly -->
+    <string name="backendUrl">http://127.0.0.1</string>
+    <string name="chat_url"></string>
 </resources>

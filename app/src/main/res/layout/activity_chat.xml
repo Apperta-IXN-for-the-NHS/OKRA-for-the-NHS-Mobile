@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".contact.ChatActivity">
+    tools:context="org.apperta.okramobile.contact.ChatActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

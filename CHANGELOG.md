@@ -136,7 +136,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.5.0] - 2020-08-06
 
 ### Added
-- App launcher icon and colors complying with EMIS' image and brand
+- App launcher icon and colors
 
 ## [0.4.0] - 2020-08-04
 
